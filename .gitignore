@@ -1,0 +1,9 @@
+# ignored files
+run_parser.out
+
+parser_generator.tab.h
+parser_generator.tab.c
+lex.yy.c
+
+.DS_Store
+
