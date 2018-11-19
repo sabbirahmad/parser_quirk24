@@ -12,8 +12,6 @@ int yyparse();
 %}
 
 %union{
-	int	ival;
-	float	fval;
 	char*	sval;
 }
 
@@ -22,17 +20,17 @@ int yyparse();
 
 %token SEMICOLON COMMA COLON LPAR RPAR LBRACE RBRACE LBRACKET RBRACKET LANGLE RANGLE ARROW DOT VOID NULLVALUE TRUE FALSE FUNCTION PROTOCOL EXTENDS IMPLEMENTS FUN CLASS RETURN IF ELSEIF ELSE WHILE FOR HALT NEW LAMBDA THIS
 
-%token	<ival>	INTLITERAL
-%token	<fval>	FLOATLITERAL
-%token	<sval>	ID TYPEVAR ASSIGNOP OROP ANDOP RELOP ADDOP MULOP UNOP PRIMTYPE CHARLITERAL STRINGLITERAL
+%token	<sval>  INTLITERAL FLOATLITERAL ID TYPEVAR ASSIGNOP OROP ANDOP RELOP ADDOP MULOP UNOP PRIMTYPE CHARLITERAL STRINGLITERAL
 
 %left	PLUS
 %left	MULT
 
 %%
 
-program:	{printf("(illegal)")}
-                ;
+program:
+        protodecs classdecs stm         { printf("(program %s %s %s)", $1, $2, $3); }
+       |                                { printf("(illegal)"); }
+       ;
 
 %%
 
@@ -59,5 +57,3 @@ int main(int argc, char **argv)
 
   return 0;
 }
-
-

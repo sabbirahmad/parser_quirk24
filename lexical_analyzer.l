@@ -22,7 +22,7 @@ stringliteral   \"[ a-zA-Z0-9_~#$%&()\*+\-\,\.\/:;<=>?@\[\]^\{\}~]*\"
 %%
 
 "void"          { /*printf("%s\n", yytext);*/ return VOID; }
-"bool"|"char"|"string"|"int"|"float"            { /*printf("primtype %s\n", yytext);*/ yylval.ival = atoi(yytext); return PRIMTYPE; }
+"bool"|"char"|"string"|"int"|"float"            { /*printf("primtype %s\n", yytext);*/ yylval.sval = yytext; return PRIMTYPE; }
 "null"          { /*printf("%s\n", yytext);*/ return NULLVALUE; }
 "true"          { /*printf("%s\n", yytext);*/ return TRUE; }
 "false"         { /*printf("%s\n", yytext);*/ return FALSE; }
@@ -44,8 +44,8 @@ stringliteral   \"[ a-zA-Z0-9_~#$%&()\*+\-\,\.\/:;<=>?@\[\]^\{\}~]*\"
 "lambda"        { /*printf("%s\n", yytext);*/ return LAMBDA; }
 "this"          { /*printf("%s\n", yytext);*/ return THIS; }
 
-{intliteral}	{ /*printf("intliteral %d\n", atoi(yytext));*/ yylval.ival = atoi(yytext); return INTLITERAL; }
-{floatliteral}	{ /*printf("floatliteral %f\n", atof(yytext));*/ yylval.fval = atof(yytext); return FLOATLITERAL; }
+{intliteral}	{ /*printf("intliteral %d\n", atoi(yytext));*/ yylval.sval = yytext; return INTLITERAL; }
+{floatliteral}	{ /*printf("floatliteral %f\n", atof(yytext));*/ yylval.sval = yytext; return FLOATLITERAL; }
 {id}		{ /*printf("id %s\n", yytext);*/ yylval.sval = yytext; return ID; }
 {tvar}		{ /*printf("typevar %s\n", yytext);*/ yylval.sval = yytext; return TYPEVAR; }
 "="		{ /*printf("assignop %s\n", yytext);*/ yylval.sval= yytext; return ASSIGNOP; }
