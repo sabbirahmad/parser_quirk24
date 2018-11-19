@@ -3,11 +3,16 @@
 if [ "$1" == "clean" ]
 then
 	echo 'cleaning ...'
-	rm -f parser_generator.tab.h parser_generator.tab.c lex.yy.c run_parser.out
+	rm -f parser_generator.tab.c lex.yy.c run_parser.out lexical_analyzer.out #parser_generator.tab.h 
 	exit 0
 fi
 
-flex lexical_analyser.l
+flex lexical_analyzer.l
 bison -d parser_generator.y
 gcc parser_generator.tab.c lex.yy.c -o run_parser.out
-./run_parser.out $1
+
+astFile="$(cut -d'.' -f1 <<<"$1")"
+ext=".ast"
+astFile=$astFile$ext
+
+./run_parser.out $1 > $astFile

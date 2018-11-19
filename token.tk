@@ -1,0 +1,384 @@
+protocol
+id primes
+{
+fun
+id divides
+(
+primtype int
+id d
+comma ,
+primtype int
+id n
+)
+colon :
+primtype bool
+semicolon ; at Line 2
+fun
+id isPrime
+(
+primtype int
+id n
+)
+colon :
+primtype bool
+semicolon ; at Line 3
+}
+class
+id prime
+implements
+id primes
+{
+(
+)
+{
+}
+fun
+id divides
+(
+primtype int
+id d
+comma ,
+primtype int
+id n
+)
+colon :
+primtype bool
+{
+primtype int
+id q
+assignop =
+id n
+mulop /
+id d
+semicolon ; at Line 10
+primtype int
+id r
+assignop =
+id n
+addop -
+id q
+mulop *
+id d
+semicolon ; at Line 11
+return
+id r
+relop ==
+intliteral 0
+semicolon ; at Line 12
+}
+fun
+id isPrime
+(
+primtype int
+id n
+)
+colon :
+primtype bool
+{
+id printInt
+(
+id n
+)
+semicolon ; at Line 16
+id printLine
+(
+)
+semicolon ; at Line 17
+if
+(
+id n
+relop <
+intliteral 2
+)
+return
+false
+semicolon ; at Line 19
+else if
+(
+id n
+relop ==
+intliteral 2
+)
+return
+true
+semicolon ; at Line 21
+else
+{
+primtype int
+id d
+assignop =
+intliteral 3
+semicolon ; at Line 23
+while
+(
+id d
+relop <
+id n
+)
+{
+if
+(
+id divides
+(
+id d
+comma ,
+id n
+)
+)
+return
+false
+semicolon ; at Line 26
+else
+id d
+assignop =
+id d
+addop +
+intliteral 2
+semicolon ; at Line 27
+}
+return
+true
+semicolon ; at Line 29
+}
+}
+COMMENT // Every kind of expression there is,
+COMMENT // except for new expressions with a type application.
+fun
+id expressions
+(
+)
+{
+primtype bool
+id b
+assignop =
+true
+orop ||
+false
+orop ||
+true
+semicolon ; at Line 37
+primtype int
+id n
+assignop =
+intliteral 3
+mulop *
+intliteral 4
+mulop *
+intliteral 5
+addop +
+intliteral 6
+addop -
+intliteral 7
+mulop /
+intliteral 8
+semicolon ; at Line 38
+primtype float
+id x
+assignop =
+id n
+semicolon ; at Line 39
+id b
+assignop =
+id b
+andop &&
+true
+andop &&
+false
+andop &&
+id b
+semicolon ; at Line 40
+id b
+assignop =
+id b
+andop &&
+id n
+relop <
+intliteral 14
+andop &&
+id b
+semicolon ; at Line 41
+null
+semicolon ; at Line 42
+new
+id prime
+(
+)
+.
+id isPrime
+(
+intliteral 13
+)
+orop ||
+id b
+andop &&
+id b
+orop ||
+id x
+relop <
+floatliteral 3.400000
+semicolon ; at Line 43
+new
+primtype int
+[
+]
+[
+]
+[
+]
+[
+intliteral 45
+]
+[
+id n
+]
+semicolon ; at Line 44
+lambda
+(
+primtype int
+id a
+comma ,
+primtype int
+id b
+)
+colon :
+primtype bool
+{
+return
+id a
+relop <
+id b
+semicolon ; at Line 45
+}
+(
+intliteral 3
+comma ,
+intliteral 4
+)
+orop ||
+true
+semicolon ; at Line 45
+lambda
+(
+primtype float
+id x
+comma ,
+primtype float
+id y
+comma ,
+primtype float
+id z
+)
+{
+id x
+addop +
+id y
+addop +
+id z
+semicolon ; at Line 46
+}
+(
+id x
+comma ,
+id x
+comma ,
+id x
+)
+semicolon ; at Line 46
+lambda
+(
+primtype float
+id x
+)
+{
+id x
+addop +
+id x
+addop +
+id x
+semicolon ; at Line 47
+return
+semicolon ; at Line 47
+}
+(
+floatliteral 3.700000
+)
+semicolon ; at Line 47
+charliteral 'a'
+semicolon ; at Line 48
+stringliteral "abc"
+semicolon ; at Line 49
+intliteral 13
+semicolon ; at Line 50
+floatliteral 25.000000
+semicolon ; at Line 51
+id n
+relop ==
+intliteral 3
+semicolon ; at Line 52
+id n
+relop !=
+intliteral 3
+semicolon ; at Line 53
+id n
+relop <
+intliteral 3
+semicolon ; at Line 54
+id n
+relop <=
+intliteral 3
+semicolon ; at Line 55
+id n
+relop >
+intliteral 3
+semicolon ; at Line 56
+id n
+relop >=
+intliteral 3
+semicolon ; at Line 57
+unop ![unop]
+(
+id n
+relop >
+intliteral 3
+)
+semicolon ; at Line 58
+id n
+addop +
+addop -
+intliteral 4
+addop -
+intliteral 5
+addop -
+addop -
+intliteral 6
+semicolon ; at Line 59
+}
+}
+{
+id primes
+id c
+assignop =
+new
+id prime
+(
+)
+semicolon ; at Line 64
+id printBool
+(
+id c
+.
+id isPrime
+(
+id readInt
+(
+)
+)
+)
+semicolon ; at Line 65
+id printLine
+(
+)
+semicolon ; at Line 66
+}
+
+Lines: 69

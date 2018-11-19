@@ -1,0 +1,5 @@
+"{
+    primes c = new prime();
+    printBool (c.isPrime (readInt()));
+    printLine();
+}

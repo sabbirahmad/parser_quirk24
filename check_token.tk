@@ -1,0 +1,198 @@
+id protocol
+id list
+relop <
+typevar T
+relop >
+{
+id fun
+id empty
+(
+)
+colon :
+id list
+relop <
+typevar T
+relop >
+semicolon ;
+id fun
+id with
+(
+typevar T
+id z
+)
+colon :
+id list
+relop <
+typevar T
+relop >
+semicolon ;
+id fun
+id isEmpty
+(
+)
+colon :
+id bool
+semicolon ;
+id fun
+id first
+(
+)
+colon :
+typevar T
+semicolon ;
+id fun
+id rest
+(
+)
+colon :
+id list
+relop <
+typevar T
+relop >
+semicolon ;
+id fun
+id last
+(
+)
+colon :
+typevar T
+semicolon ;
+id fun
+id butLast
+(
+)
+colon :
+id list
+relop <
+typevar T
+relop >
+semicolon ;
+id fun
+id followedBy
+(
+id list
+relop <
+typevar T
+relop >
+id x
+)
+colon :
+id list
+relop <
+typevar T
+relop >
+semicolon ;
+id fun
+id forEach
+relop <
+typevar T2
+relop >
+(
+id function
+(
+(
+typevar T
+)
+->
+typevar T2
+)
+id f
+)
+semicolon ;
+id fun
+id map
+relop <
+typevar T2
+relop >
+(
+id function
+(
+(
+typevar T
+)
+->
+typevar T2
+)
+id f
+)
+colon :
+id list
+relop <
+typevar T2
+relop >
+semicolon ;
+}
+id class
+id emptyList
+relop <
+typevar T
+relop >
+id implements
+id list
+relop <
+typevar T
+relop >
+{
+(
+)
+{
+}
+id fun
+id empty
+(
+)
+colon :
+id list
+relop <
+typevar T
+relop >
+{
+id return
+id this
+semicolon ;
+}
+id fun
+id with
+(
+typevar T
+id z
+)
+colon :
+id list
+relop <
+typevar T
+relop >
+{
+id return
+id new
+id linkedList
+relop <
+typevar T
+relop >
+(
+id this
+comma ,
+id z
+)
+semicolon ;
+}
+id fun
+id isEmpty
+(
+)
+colon :
+id bool
+{
+id return
+id true
+semicolon ;
+}
+id fun
+id first
+(
+)
+colon :
+typevar T
+{
+id halt
+(

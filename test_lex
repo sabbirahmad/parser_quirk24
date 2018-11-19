@@ -1,0 +1,13 @@
+#!/bin/sh
+
+#header_file="parser_generator.tab.h"
+#if [ ! -f "$header_file" ]
+#then
+#	echo "" > "$header_file"
+#fi
+
+flex lexical_analyzer.l
+gcc lex.yy.c -o lexical_analyzer.out
+
+./lexical_analyzer.out $1
+

@@ -12,31 +12,31 @@ int yyparse();
 %}
 
 %union{
-  int		int_val;
-  float		fval;
-  char*		op_val;
+	int	ival;
+	float	fval;
+	char*	sval;
 }
 
 
-%start	input 
+%start	program 
 
-%token	<int_val>	INTEGER_LITERAL
-%type	<int_val>	exp
+%token SEMICOLON COMMA COLON LPAR RPAR LBRACE RBRACE LBRACKET RBRACKET LANGLE RANGLE ARROW DOT VOID NULLVALUE TRUE FALSE FUNCTION PROTOCOL EXTENDS IMPLEMENTS FUN CLASS RETURN IF ELSEIF ELSE WHILE FOR HALT NEW LAMBDA THIS
+
+%token	<ival>	INTLITERAL
+%token	<fval>	FLOATLITERAL
+%token	<sval>	ID TYPEVAR ASSIGNOP OROP ANDOP RELOP ADDOP MULOP UNOP PRIMTYPE CHARLITERAL STRINGLITERAL
+
 %left	PLUS
 %left	MULT
 
 %%
 
-input:		/* empty */
-		| exp	{ printf("Result: %d\n", $1); }
-		;
-
-exp:		INTEGER_LITERAL	{ $$ = $1; }
-		| exp PLUS exp	{ $$ = $1 + $3; }
-		| exp MULT exp	{ $$ = $1 * $3; }
-		;
+program:	{printf("(illegal)")}
+                ;
 
 %%
+
+/*%type	<ival>	exp*/
 
 int yyerror(char *s)
 {
