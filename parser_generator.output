@@ -1,0 +1,1933 @@
+Useless nonterminals
+
+   typeapps
+   typeappsrest
+   fundecs
+
+
+Terminals which are not used
+
+   DOT
+   PROTOCOL
+   EXTENDS
+   IMPLEMENTS
+   CLASS
+   NEW
+   LAMBDA
+   THIS
+
+
+Useless rules
+
+   74 typeapps: /* empty */
+   75         | typeapp typeappsrest
+
+   76 typeappsrest: /* empty */
+   77             | COMMA typeapp typeappsrest
+
+   78 fundecs: /* empty */
+   79        | fundec fundecs
+
+
+State 6 conflicts: 1 shift/reduce
+State 39 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: protodecs classdecs stm
+    2        | /* empty */
+
+    3 protodecs: /* empty */
+
+    4 classdecs: /* empty */
+
+    5 typevars: /* empty */
+    6         | LANGLE tvars RANGLE
+
+    7 typeapp: typeid
+    8        | typeid LANGLE types RANGLE
+    9        | TVAR
+
+   10 formal: type ID
+
+   11 fundec: FUN ID typevars LPAR formals RPAR block
+   12       | FUN ID typevars LPAR formals RPAR COLON rtype block
+
+   13 block: LBRACE localdecs stms RBRACE
+
+   14 localdec: vardec
+   15         | fundec
+
+   16 vardec: type ID ASSIGNOP exp SEMICOLON
+
+   17 type: PRIMTYPE
+   18     | typeapp
+   19     | type LBRACKET RBRACKET
+   20     | FUNCTION LPAR LPAR types RPAR ARROW rtype RPAR
+
+   21 rtype: type
+   22      | VOID
+
+   23 stm: SEMICOLON
+   24    | exp SEMICOLON
+   25    | IF LPAR exp RPAR stm ELSE stm
+   26    | WHILE LPAR exp RPAR stm
+   27    | FOR LPAR vardec exp SEMICOLON exp RPAR stm
+   28    | RETURN SEMICOLON
+   29    | RETURN exp SEMICOLON
+   30    | block
+   31    | HALT LPAR exp RPAR SEMICOLON
+
+   32 exp: lhs
+   33    | lhs ASSIGNOP exp
+
+   34 lhs: disjunct
+   35    | disjunct OROP lhs
+
+   36 disjunct: conjunct
+   37         | conjunct ANDOP disjunct
+
+   38 conjunct: simple
+   39         | simple RELOP simple
+   40         | simple LANGLE simple
+   41         | simple RANGLE simple
+
+   42 simple: term
+   43       | simple ADDOP term
+   44       | simple MINUS term
+
+   45 term: factor
+   46     | term MULOP factor
+
+   47 factor: UNOP factor
+   48       | MINUS factor
+   49       | literal factorrest
+   50       | ID factorrest
+
+   51 factorrest: /* empty */
+
+   52 literal: NULLVALUE
+   53        | TRUE
+   54        | FALSE
+   55        | CHARLITERAL
+   56        | STRINGLITERAL
+   57        | INTLITERAL
+   58        | FLOATLITERAL
+
+   59 tvars: TVAR
+   60      | TVAR COMMA tvars
+
+   61 types: /* empty */
+   62      | type typesrest
+
+   63 typesrest: /* empty */
+   64          | COMMA type typesrest
+
+   65 localdecs: /* empty */
+   66          | localdec localdecs
+
+   67 stms: /* empty */
+   68     | stm stms
+
+   69 formals: /* empty */
+   70        | formal formalsrest
+
+   71 formalsrest: /* empty */
+   72            | COMMA formal formalsrest
+
+   73 typeid: ID
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+SEMICOLON (258) 16 23 24 27 28 29 31
+COMMA (259) 60 64 72
+COLON (260) 12
+LPAR (261) 11 12 20 25 26 27 31
+RPAR (262) 11 12 20 25 26 27 31
+LBRACE (263) 13
+RBRACE (264) 13
+LBRACKET (265) 19
+RBRACKET (266) 19
+ARROW (267) 20
+DOT (268)
+VOID (269) 22
+NULLVALUE (270) 52
+TRUE (271) 53
+FALSE (272) 54
+FUNCTION (273) 20
+PROTOCOL (274)
+EXTENDS (275)
+IMPLEMENTS (276)
+FUN (277) 11 12
+CLASS (278)
+RETURN (279) 28 29
+IF (280) 25
+ELSE (281) 25
+WHILE (282) 26
+FOR (283) 27
+HALT (284) 31
+NEW (285)
+LAMBDA (286)
+THIS (287)
+INTLITERAL (288) 57
+FLOATLITERAL (289) 58
+ID (290) 10 11 12 16 50 73
+TVAR (291) 9 59 60
+ASSIGNOP (292) 16 33
+OROP (293) 35
+ANDOP (294) 37
+RELOP (295) 39
+ADDOP (296) 43
+MULOP (297) 46
+UNOP (298) 47
+PRIMTYPE (299) 17
+CHARLITERAL (300) 55
+STRINGLITERAL (301) 56
+MINUS (302) 44 48
+LANGLE (303) 6 8 40
+RANGLE (304) 6 8 41
+
+
+Nonterminals, with rules where they appear
+
+$accept (50)
+    on left: 0
+program (51)
+    on left: 1 2, on right: 0
+protodecs (52)
+    on left: 3, on right: 1
+classdecs (53)
+    on left: 4, on right: 1
+typevars (54)
+    on left: 5 6, on right: 11 12
+typeapp (55)
+    on left: 7 8 9, on right: 18
+formal (56)
+    on left: 10, on right: 70 72
+fundec (57)
+    on left: 11 12, on right: 15
+block (58)
+    on left: 13, on right: 11 12 30
+localdec (59)
+    on left: 14 15, on right: 66
+vardec (60)
+    on left: 16, on right: 14 27
+type (61)
+    on left: 17 18 19 20, on right: 10 16 19 21 62 64
+rtype (62)
+    on left: 21 22, on right: 12 20
+stm (63)
+    on left: 23 24 25 26 27 28 29 30 31, on right: 1 25 26 27 68
+exp (64)
+    on left: 32 33, on right: 16 24 25 26 27 29 31 33
+lhs (65)
+    on left: 34 35, on right: 32 33 35
+disjunct (66)
+    on left: 36 37, on right: 34 35 37
+conjunct (67)
+    on left: 38 39 40 41, on right: 36 37
+simple (68)
+    on left: 42 43 44, on right: 38 39 40 41 43 44
+term (69)
+    on left: 45 46, on right: 42 43 44 46
+factor (70)
+    on left: 47 48 49 50, on right: 45 46 47 48
+factorrest (71)
+    on left: 51, on right: 49 50
+literal (72)
+    on left: 52 53 54 55 56 57 58, on right: 49
+tvars (73)
+    on left: 59 60, on right: 6 60
+types (74)
+    on left: 61 62, on right: 8 20
+typesrest (75)
+    on left: 63 64, on right: 62 64
+localdecs (76)
+    on left: 65 66, on right: 13 66
+stms (77)
+    on left: 67 68, on right: 13 68
+formals (78)
+    on left: 69 70, on right: 11 12
+formalsrest (79)
+    on left: 71 72, on right: 70 72
+typeid (80)
+    on left: 73, on right: 7 8
+
+
+state 0
+
+    0 $accept: . program $end
+
+    $end      reduce using rule 2 (program)
+    $default  reduce using rule 3 (protodecs)
+
+    program    go to state 1
+    protodecs  go to state 2
+
+
+state 1
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 3
+
+
+state 2
+
+    1 program: protodecs . classdecs stm
+
+    $default  reduce using rule 4 (classdecs)
+
+    classdecs  go to state 4
+
+
+state 3
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+state 4
+
+    1 program: protodecs classdecs . stm
+
+    SEMICOLON      shift, and go to state 5
+    LBRACE         shift, and go to state 6
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    RETURN         shift, and go to state 10
+    IF             shift, and go to state 11
+    WHILE          shift, and go to state 12
+    FOR            shift, and go to state 13
+    HALT           shift, and go to state 14
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    block     go to state 22
+    stm       go to state 23
+    exp       go to state 24
+    lhs       go to state 25
+    disjunct  go to state 26
+    conjunct  go to state 27
+    simple    go to state 28
+    term      go to state 29
+    factor    go to state 30
+    literal   go to state 31
+
+
+state 5
+
+   23 stm: SEMICOLON .
+
+    $default  reduce using rule 23 (stm)
+
+
+state 6
+
+   13 block: LBRACE . localdecs stms RBRACE
+
+    FUNCTION  shift, and go to state 32
+    FUN       shift, and go to state 33
+    ID        shift, and go to state 34
+    TVAR      shift, and go to state 35
+    PRIMTYPE  shift, and go to state 36
+
+    ID        [reduce using rule 65 (localdecs)]
+    $default  reduce using rule 65 (localdecs)
+
+    typeapp    go to state 37
+    fundec     go to state 38
+    localdec   go to state 39
+    vardec     go to state 40
+    type       go to state 41
+    localdecs  go to state 42
+    typeid     go to state 43
+
+
+state 7
+
+   52 literal: NULLVALUE .
+
+    $default  reduce using rule 52 (literal)
+
+
+state 8
+
+   53 literal: TRUE .
+
+    $default  reduce using rule 53 (literal)
+
+
+state 9
+
+   54 literal: FALSE .
+
+    $default  reduce using rule 54 (literal)
+
+
+state 10
+
+   28 stm: RETURN . SEMICOLON
+   29    | RETURN . exp SEMICOLON
+
+    SEMICOLON      shift, and go to state 44
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    exp       go to state 45
+    lhs       go to state 25
+    disjunct  go to state 26
+    conjunct  go to state 27
+    simple    go to state 28
+    term      go to state 29
+    factor    go to state 30
+    literal   go to state 31
+
+
+state 11
+
+   25 stm: IF . LPAR exp RPAR stm ELSE stm
+
+    LPAR  shift, and go to state 46
+
+
+state 12
+
+   26 stm: WHILE . LPAR exp RPAR stm
+
+    LPAR  shift, and go to state 47
+
+
+state 13
+
+   27 stm: FOR . LPAR vardec exp SEMICOLON exp RPAR stm
+
+    LPAR  shift, and go to state 48
+
+
+state 14
+
+   31 stm: HALT . LPAR exp RPAR SEMICOLON
+
+    LPAR  shift, and go to state 49
+
+
+state 15
+
+   57 literal: INTLITERAL .
+
+    $default  reduce using rule 57 (literal)
+
+
+state 16
+
+   58 literal: FLOATLITERAL .
+
+    $default  reduce using rule 58 (literal)
+
+
+state 17
+
+   50 factor: ID . factorrest
+
+    $default  reduce using rule 51 (factorrest)
+
+    factorrest  go to state 50
+
+
+state 18
+
+   47 factor: UNOP . factor
+
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    factor   go to state 51
+    literal  go to state 31
+
+
+state 19
+
+   55 literal: CHARLITERAL .
+
+    $default  reduce using rule 55 (literal)
+
+
+state 20
+
+   56 literal: STRINGLITERAL .
+
+    $default  reduce using rule 56 (literal)
+
+
+state 21
+
+   48 factor: MINUS . factor
+
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    factor   go to state 52
+    literal  go to state 31
+
+
+state 22
+
+   30 stm: block .
+
+    $default  reduce using rule 30 (stm)
+
+
+state 23
+
+    1 program: protodecs classdecs stm .
+
+    $default  reduce using rule 1 (program)
+
+
+state 24
+
+   24 stm: exp . SEMICOLON
+
+    SEMICOLON  shift, and go to state 53
+
+
+state 25
+
+   32 exp: lhs .
+   33    | lhs . ASSIGNOP exp
+
+    ASSIGNOP  shift, and go to state 54
+
+    $default  reduce using rule 32 (exp)
+
+
+state 26
+
+   34 lhs: disjunct .
+   35    | disjunct . OROP lhs
+
+    OROP  shift, and go to state 55
+
+    $default  reduce using rule 34 (lhs)
+
+
+state 27
+
+   36 disjunct: conjunct .
+   37         | conjunct . ANDOP disjunct
+
+    ANDOP  shift, and go to state 56
+
+    $default  reduce using rule 36 (disjunct)
+
+
+state 28
+
+   38 conjunct: simple .
+   39         | simple . RELOP simple
+   40         | simple . LANGLE simple
+   41         | simple . RANGLE simple
+   43 simple: simple . ADDOP term
+   44       | simple . MINUS term
+
+    RELOP   shift, and go to state 57
+    ADDOP   shift, and go to state 58
+    MINUS   shift, and go to state 59
+    LANGLE  shift, and go to state 60
+    RANGLE  shift, and go to state 61
+
+    $default  reduce using rule 38 (conjunct)
+
+
+state 29
+
+   42 simple: term .
+   46 term: term . MULOP factor
+
+    MULOP  shift, and go to state 62
+
+    $default  reduce using rule 42 (simple)
+
+
+state 30
+
+   45 term: factor .
+
+    $default  reduce using rule 45 (term)
+
+
+state 31
+
+   49 factor: literal . factorrest
+
+    $default  reduce using rule 51 (factorrest)
+
+    factorrest  go to state 63
+
+
+state 32
+
+   20 type: FUNCTION . LPAR LPAR types RPAR ARROW rtype RPAR
+
+    LPAR  shift, and go to state 64
+
+
+state 33
+
+   11 fundec: FUN . ID typevars LPAR formals RPAR block
+   12       | FUN . ID typevars LPAR formals RPAR COLON rtype block
+
+    ID  shift, and go to state 65
+
+
+state 34
+
+   73 typeid: ID .
+
+    $default  reduce using rule 73 (typeid)
+
+
+state 35
+
+    9 typeapp: TVAR .
+
+    $default  reduce using rule 9 (typeapp)
+
+
+state 36
+
+   17 type: PRIMTYPE .
+
+    $default  reduce using rule 17 (type)
+
+
+state 37
+
+   18 type: typeapp .
+
+    $default  reduce using rule 18 (type)
+
+
+state 38
+
+   15 localdec: fundec .
+
+    $default  reduce using rule 15 (localdec)
+
+
+state 39
+
+   66 localdecs: localdec . localdecs
+
+    FUNCTION  shift, and go to state 32
+    FUN       shift, and go to state 33
+    ID        shift, and go to state 34
+    TVAR      shift, and go to state 35
+    PRIMTYPE  shift, and go to state 36
+
+    ID        [reduce using rule 65 (localdecs)]
+    $default  reduce using rule 65 (localdecs)
+
+    typeapp    go to state 37
+    fundec     go to state 38
+    localdec   go to state 39
+    vardec     go to state 40
+    type       go to state 41
+    localdecs  go to state 66
+    typeid     go to state 43
+
+
+state 40
+
+   14 localdec: vardec .
+
+    $default  reduce using rule 14 (localdec)
+
+
+state 41
+
+   16 vardec: type . ID ASSIGNOP exp SEMICOLON
+   19 type: type . LBRACKET RBRACKET
+
+    LBRACKET  shift, and go to state 67
+    ID        shift, and go to state 68
+
+
+state 42
+
+   13 block: LBRACE localdecs . stms RBRACE
+
+    SEMICOLON      shift, and go to state 5
+    LBRACE         shift, and go to state 6
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    RETURN         shift, and go to state 10
+    IF             shift, and go to state 11
+    WHILE          shift, and go to state 12
+    FOR            shift, and go to state 13
+    HALT           shift, and go to state 14
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    $default  reduce using rule 67 (stms)
+
+    block     go to state 22
+    stm       go to state 69
+    exp       go to state 24
+    lhs       go to state 25
+    disjunct  go to state 26
+    conjunct  go to state 27
+    simple    go to state 28
+    term      go to state 29
+    factor    go to state 30
+    literal   go to state 31
+    stms      go to state 70
+
+
+state 43
+
+    7 typeapp: typeid .
+    8        | typeid . LANGLE types RANGLE
+
+    LANGLE  shift, and go to state 71
+
+    $default  reduce using rule 7 (typeapp)
+
+
+state 44
+
+   28 stm: RETURN SEMICOLON .
+
+    $default  reduce using rule 28 (stm)
+
+
+state 45
+
+   29 stm: RETURN exp . SEMICOLON
+
+    SEMICOLON  shift, and go to state 72
+
+
+state 46
+
+   25 stm: IF LPAR . exp RPAR stm ELSE stm
+
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    exp       go to state 73
+    lhs       go to state 25
+    disjunct  go to state 26
+    conjunct  go to state 27
+    simple    go to state 28
+    term      go to state 29
+    factor    go to state 30
+    literal   go to state 31
+
+
+state 47
+
+   26 stm: WHILE LPAR . exp RPAR stm
+
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    exp       go to state 74
+    lhs       go to state 25
+    disjunct  go to state 26
+    conjunct  go to state 27
+    simple    go to state 28
+    term      go to state 29
+    factor    go to state 30
+    literal   go to state 31
+
+
+state 48
+
+   27 stm: FOR LPAR . vardec exp SEMICOLON exp RPAR stm
+
+    FUNCTION  shift, and go to state 32
+    ID        shift, and go to state 34
+    TVAR      shift, and go to state 35
+    PRIMTYPE  shift, and go to state 36
+
+    typeapp  go to state 37
+    vardec   go to state 75
+    type     go to state 41
+    typeid   go to state 43
+
+
+state 49
+
+   31 stm: HALT LPAR . exp RPAR SEMICOLON
+
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    exp       go to state 76
+    lhs       go to state 25
+    disjunct  go to state 26
+    conjunct  go to state 27
+    simple    go to state 28
+    term      go to state 29
+    factor    go to state 30
+    literal   go to state 31
+
+
+state 50
+
+   50 factor: ID factorrest .
+
+    $default  reduce using rule 50 (factor)
+
+
+state 51
+
+   47 factor: UNOP factor .
+
+    $default  reduce using rule 47 (factor)
+
+
+state 52
+
+   48 factor: MINUS factor .
+
+    $default  reduce using rule 48 (factor)
+
+
+state 53
+
+   24 stm: exp SEMICOLON .
+
+    $default  reduce using rule 24 (stm)
+
+
+state 54
+
+   33 exp: lhs ASSIGNOP . exp
+
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    exp       go to state 77
+    lhs       go to state 25
+    disjunct  go to state 26
+    conjunct  go to state 27
+    simple    go to state 28
+    term      go to state 29
+    factor    go to state 30
+    literal   go to state 31
+
+
+state 55
+
+   35 lhs: disjunct OROP . lhs
+
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    lhs       go to state 78
+    disjunct  go to state 26
+    conjunct  go to state 27
+    simple    go to state 28
+    term      go to state 29
+    factor    go to state 30
+    literal   go to state 31
+
+
+state 56
+
+   37 disjunct: conjunct ANDOP . disjunct
+
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    disjunct  go to state 79
+    conjunct  go to state 27
+    simple    go to state 28
+    term      go to state 29
+    factor    go to state 30
+    literal   go to state 31
+
+
+state 57
+
+   39 conjunct: simple RELOP . simple
+
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    simple   go to state 80
+    term     go to state 29
+    factor   go to state 30
+    literal  go to state 31
+
+
+state 58
+
+   43 simple: simple ADDOP . term
+
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    term     go to state 81
+    factor   go to state 30
+    literal  go to state 31
+
+
+state 59
+
+   44 simple: simple MINUS . term
+
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    term     go to state 82
+    factor   go to state 30
+    literal  go to state 31
+
+
+state 60
+
+   40 conjunct: simple LANGLE . simple
+
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    simple   go to state 83
+    term     go to state 29
+    factor   go to state 30
+    literal  go to state 31
+
+
+state 61
+
+   41 conjunct: simple RANGLE . simple
+
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    simple   go to state 84
+    term     go to state 29
+    factor   go to state 30
+    literal  go to state 31
+
+
+state 62
+
+   46 term: term MULOP . factor
+
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    factor   go to state 85
+    literal  go to state 31
+
+
+state 63
+
+   49 factor: literal factorrest .
+
+    $default  reduce using rule 49 (factor)
+
+
+state 64
+
+   20 type: FUNCTION LPAR . LPAR types RPAR ARROW rtype RPAR
+
+    LPAR  shift, and go to state 86
+
+
+state 65
+
+   11 fundec: FUN ID . typevars LPAR formals RPAR block
+   12       | FUN ID . typevars LPAR formals RPAR COLON rtype block
+
+    LANGLE  shift, and go to state 87
+
+    $default  reduce using rule 5 (typevars)
+
+    typevars  go to state 88
+
+
+state 66
+
+   66 localdecs: localdec localdecs .
+
+    $default  reduce using rule 66 (localdecs)
+
+
+state 67
+
+   19 type: type LBRACKET . RBRACKET
+
+    RBRACKET  shift, and go to state 89
+
+
+state 68
+
+   16 vardec: type ID . ASSIGNOP exp SEMICOLON
+
+    ASSIGNOP  shift, and go to state 90
+
+
+state 69
+
+   68 stms: stm . stms
+
+    SEMICOLON      shift, and go to state 5
+    LBRACE         shift, and go to state 6
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    RETURN         shift, and go to state 10
+    IF             shift, and go to state 11
+    WHILE          shift, and go to state 12
+    FOR            shift, and go to state 13
+    HALT           shift, and go to state 14
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    $default  reduce using rule 67 (stms)
+
+    block     go to state 22
+    stm       go to state 69
+    exp       go to state 24
+    lhs       go to state 25
+    disjunct  go to state 26
+    conjunct  go to state 27
+    simple    go to state 28
+    term      go to state 29
+    factor    go to state 30
+    literal   go to state 31
+    stms      go to state 91
+
+
+state 70
+
+   13 block: LBRACE localdecs stms . RBRACE
+
+    RBRACE  shift, and go to state 92
+
+
+state 71
+
+    8 typeapp: typeid LANGLE . types RANGLE
+
+    FUNCTION  shift, and go to state 32
+    ID        shift, and go to state 34
+    TVAR      shift, and go to state 35
+    PRIMTYPE  shift, and go to state 36
+
+    $default  reduce using rule 61 (types)
+
+    typeapp  go to state 37
+    type     go to state 93
+    types    go to state 94
+    typeid   go to state 43
+
+
+state 72
+
+   29 stm: RETURN exp SEMICOLON .
+
+    $default  reduce using rule 29 (stm)
+
+
+state 73
+
+   25 stm: IF LPAR exp . RPAR stm ELSE stm
+
+    RPAR  shift, and go to state 95
+
+
+state 74
+
+   26 stm: WHILE LPAR exp . RPAR stm
+
+    RPAR  shift, and go to state 96
+
+
+state 75
+
+   27 stm: FOR LPAR vardec . exp SEMICOLON exp RPAR stm
+
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    exp       go to state 97
+    lhs       go to state 25
+    disjunct  go to state 26
+    conjunct  go to state 27
+    simple    go to state 28
+    term      go to state 29
+    factor    go to state 30
+    literal   go to state 31
+
+
+state 76
+
+   31 stm: HALT LPAR exp . RPAR SEMICOLON
+
+    RPAR  shift, and go to state 98
+
+
+state 77
+
+   33 exp: lhs ASSIGNOP exp .
+
+    $default  reduce using rule 33 (exp)
+
+
+state 78
+
+   35 lhs: disjunct OROP lhs .
+
+    $default  reduce using rule 35 (lhs)
+
+
+state 79
+
+   37 disjunct: conjunct ANDOP disjunct .
+
+    $default  reduce using rule 37 (disjunct)
+
+
+state 80
+
+   39 conjunct: simple RELOP simple .
+   43 simple: simple . ADDOP term
+   44       | simple . MINUS term
+
+    ADDOP  shift, and go to state 58
+    MINUS  shift, and go to state 59
+
+    $default  reduce using rule 39 (conjunct)
+
+
+state 81
+
+   43 simple: simple ADDOP term .
+   46 term: term . MULOP factor
+
+    MULOP  shift, and go to state 62
+
+    $default  reduce using rule 43 (simple)
+
+
+state 82
+
+   44 simple: simple MINUS term .
+   46 term: term . MULOP factor
+
+    MULOP  shift, and go to state 62
+
+    $default  reduce using rule 44 (simple)
+
+
+state 83
+
+   40 conjunct: simple LANGLE simple .
+   43 simple: simple . ADDOP term
+   44       | simple . MINUS term
+
+    ADDOP  shift, and go to state 58
+    MINUS  shift, and go to state 59
+
+    $default  reduce using rule 40 (conjunct)
+
+
+state 84
+
+   41 conjunct: simple RANGLE simple .
+   43 simple: simple . ADDOP term
+   44       | simple . MINUS term
+
+    ADDOP  shift, and go to state 58
+    MINUS  shift, and go to state 59
+
+    $default  reduce using rule 41 (conjunct)
+
+
+state 85
+
+   46 term: term MULOP factor .
+
+    $default  reduce using rule 46 (term)
+
+
+state 86
+
+   20 type: FUNCTION LPAR LPAR . types RPAR ARROW rtype RPAR
+
+    FUNCTION  shift, and go to state 32
+    ID        shift, and go to state 34
+    TVAR      shift, and go to state 35
+    PRIMTYPE  shift, and go to state 36
+
+    $default  reduce using rule 61 (types)
+
+    typeapp  go to state 37
+    type     go to state 93
+    types    go to state 99
+    typeid   go to state 43
+
+
+state 87
+
+    6 typevars: LANGLE . tvars RANGLE
+
+    TVAR  shift, and go to state 100
+
+    tvars  go to state 101
+
+
+state 88
+
+   11 fundec: FUN ID typevars . LPAR formals RPAR block
+   12       | FUN ID typevars . LPAR formals RPAR COLON rtype block
+
+    LPAR  shift, and go to state 102
+
+
+state 89
+
+   19 type: type LBRACKET RBRACKET .
+
+    $default  reduce using rule 19 (type)
+
+
+state 90
+
+   16 vardec: type ID ASSIGNOP . exp SEMICOLON
+
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    exp       go to state 103
+    lhs       go to state 25
+    disjunct  go to state 26
+    conjunct  go to state 27
+    simple    go to state 28
+    term      go to state 29
+    factor    go to state 30
+    literal   go to state 31
+
+
+state 91
+
+   68 stms: stm stms .
+
+    $default  reduce using rule 68 (stms)
+
+
+state 92
+
+   13 block: LBRACE localdecs stms RBRACE .
+
+    $default  reduce using rule 13 (block)
+
+
+state 93
+
+   19 type: type . LBRACKET RBRACKET
+   62 types: type . typesrest
+
+    COMMA     shift, and go to state 104
+    LBRACKET  shift, and go to state 67
+
+    $default  reduce using rule 63 (typesrest)
+
+    typesrest  go to state 105
+
+
+state 94
+
+    8 typeapp: typeid LANGLE types . RANGLE
+
+    RANGLE  shift, and go to state 106
+
+
+state 95
+
+   25 stm: IF LPAR exp RPAR . stm ELSE stm
+
+    SEMICOLON      shift, and go to state 5
+    LBRACE         shift, and go to state 6
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    RETURN         shift, and go to state 10
+    IF             shift, and go to state 11
+    WHILE          shift, and go to state 12
+    FOR            shift, and go to state 13
+    HALT           shift, and go to state 14
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    block     go to state 22
+    stm       go to state 107
+    exp       go to state 24
+    lhs       go to state 25
+    disjunct  go to state 26
+    conjunct  go to state 27
+    simple    go to state 28
+    term      go to state 29
+    factor    go to state 30
+    literal   go to state 31
+
+
+state 96
+
+   26 stm: WHILE LPAR exp RPAR . stm
+
+    SEMICOLON      shift, and go to state 5
+    LBRACE         shift, and go to state 6
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    RETURN         shift, and go to state 10
+    IF             shift, and go to state 11
+    WHILE          shift, and go to state 12
+    FOR            shift, and go to state 13
+    HALT           shift, and go to state 14
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    block     go to state 22
+    stm       go to state 108
+    exp       go to state 24
+    lhs       go to state 25
+    disjunct  go to state 26
+    conjunct  go to state 27
+    simple    go to state 28
+    term      go to state 29
+    factor    go to state 30
+    literal   go to state 31
+
+
+state 97
+
+   27 stm: FOR LPAR vardec exp . SEMICOLON exp RPAR stm
+
+    SEMICOLON  shift, and go to state 109
+
+
+state 98
+
+   31 stm: HALT LPAR exp RPAR . SEMICOLON
+
+    SEMICOLON  shift, and go to state 110
+
+
+state 99
+
+   20 type: FUNCTION LPAR LPAR types . RPAR ARROW rtype RPAR
+
+    RPAR  shift, and go to state 111
+
+
+state 100
+
+   59 tvars: TVAR .
+   60      | TVAR . COMMA tvars
+
+    COMMA  shift, and go to state 112
+
+    $default  reduce using rule 59 (tvars)
+
+
+state 101
+
+    6 typevars: LANGLE tvars . RANGLE
+
+    RANGLE  shift, and go to state 113
+
+
+state 102
+
+   11 fundec: FUN ID typevars LPAR . formals RPAR block
+   12       | FUN ID typevars LPAR . formals RPAR COLON rtype block
+
+    FUNCTION  shift, and go to state 32
+    ID        shift, and go to state 34
+    TVAR      shift, and go to state 35
+    PRIMTYPE  shift, and go to state 36
+
+    $default  reduce using rule 69 (formals)
+
+    typeapp  go to state 37
+    formal   go to state 114
+    type     go to state 115
+    formals  go to state 116
+    typeid   go to state 43
+
+
+state 103
+
+   16 vardec: type ID ASSIGNOP exp . SEMICOLON
+
+    SEMICOLON  shift, and go to state 117
+
+
+state 104
+
+   64 typesrest: COMMA . type typesrest
+
+    FUNCTION  shift, and go to state 32
+    ID        shift, and go to state 34
+    TVAR      shift, and go to state 35
+    PRIMTYPE  shift, and go to state 36
+
+    typeapp  go to state 37
+    type     go to state 118
+    typeid   go to state 43
+
+
+state 105
+
+   62 types: type typesrest .
+
+    $default  reduce using rule 62 (types)
+
+
+state 106
+
+    8 typeapp: typeid LANGLE types RANGLE .
+
+    $default  reduce using rule 8 (typeapp)
+
+
+state 107
+
+   25 stm: IF LPAR exp RPAR stm . ELSE stm
+
+    ELSE  shift, and go to state 119
+
+
+state 108
+
+   26 stm: WHILE LPAR exp RPAR stm .
+
+    $default  reduce using rule 26 (stm)
+
+
+state 109
+
+   27 stm: FOR LPAR vardec exp SEMICOLON . exp RPAR stm
+
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    exp       go to state 120
+    lhs       go to state 25
+    disjunct  go to state 26
+    conjunct  go to state 27
+    simple    go to state 28
+    term      go to state 29
+    factor    go to state 30
+    literal   go to state 31
+
+
+state 110
+
+   31 stm: HALT LPAR exp RPAR SEMICOLON .
+
+    $default  reduce using rule 31 (stm)
+
+
+state 111
+
+   20 type: FUNCTION LPAR LPAR types RPAR . ARROW rtype RPAR
+
+    ARROW  shift, and go to state 121
+
+
+state 112
+
+   60 tvars: TVAR COMMA . tvars
+
+    TVAR  shift, and go to state 100
+
+    tvars  go to state 122
+
+
+state 113
+
+    6 typevars: LANGLE tvars RANGLE .
+
+    $default  reduce using rule 6 (typevars)
+
+
+state 114
+
+   70 formals: formal . formalsrest
+
+    COMMA  shift, and go to state 123
+
+    $default  reduce using rule 71 (formalsrest)
+
+    formalsrest  go to state 124
+
+
+state 115
+
+   10 formal: type . ID
+   19 type: type . LBRACKET RBRACKET
+
+    LBRACKET  shift, and go to state 67
+    ID        shift, and go to state 125
+
+
+state 116
+
+   11 fundec: FUN ID typevars LPAR formals . RPAR block
+   12       | FUN ID typevars LPAR formals . RPAR COLON rtype block
+
+    RPAR  shift, and go to state 126
+
+
+state 117
+
+   16 vardec: type ID ASSIGNOP exp SEMICOLON .
+
+    $default  reduce using rule 16 (vardec)
+
+
+state 118
+
+   19 type: type . LBRACKET RBRACKET
+   64 typesrest: COMMA type . typesrest
+
+    COMMA     shift, and go to state 104
+    LBRACKET  shift, and go to state 67
+
+    $default  reduce using rule 63 (typesrest)
+
+    typesrest  go to state 127
+
+
+state 119
+
+   25 stm: IF LPAR exp RPAR stm ELSE . stm
+
+    SEMICOLON      shift, and go to state 5
+    LBRACE         shift, and go to state 6
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    RETURN         shift, and go to state 10
+    IF             shift, and go to state 11
+    WHILE          shift, and go to state 12
+    FOR            shift, and go to state 13
+    HALT           shift, and go to state 14
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    block     go to state 22
+    stm       go to state 128
+    exp       go to state 24
+    lhs       go to state 25
+    disjunct  go to state 26
+    conjunct  go to state 27
+    simple    go to state 28
+    term      go to state 29
+    factor    go to state 30
+    literal   go to state 31
+
+
+state 120
+
+   27 stm: FOR LPAR vardec exp SEMICOLON exp . RPAR stm
+
+    RPAR  shift, and go to state 129
+
+
+state 121
+
+   20 type: FUNCTION LPAR LPAR types RPAR ARROW . rtype RPAR
+
+    VOID      shift, and go to state 130
+    FUNCTION  shift, and go to state 32
+    ID        shift, and go to state 34
+    TVAR      shift, and go to state 35
+    PRIMTYPE  shift, and go to state 36
+
+    typeapp  go to state 37
+    type     go to state 131
+    rtype    go to state 132
+    typeid   go to state 43
+
+
+state 122
+
+   60 tvars: TVAR COMMA tvars .
+
+    $default  reduce using rule 60 (tvars)
+
+
+state 123
+
+   72 formalsrest: COMMA . formal formalsrest
+
+    FUNCTION  shift, and go to state 32
+    ID        shift, and go to state 34
+    TVAR      shift, and go to state 35
+    PRIMTYPE  shift, and go to state 36
+
+    typeapp  go to state 37
+    formal   go to state 133
+    type     go to state 115
+    typeid   go to state 43
+
+
+state 124
+
+   70 formals: formal formalsrest .
+
+    $default  reduce using rule 70 (formals)
+
+
+state 125
+
+   10 formal: type ID .
+
+    $default  reduce using rule 10 (formal)
+
+
+state 126
+
+   11 fundec: FUN ID typevars LPAR formals RPAR . block
+   12       | FUN ID typevars LPAR formals RPAR . COLON rtype block
+
+    COLON   shift, and go to state 134
+    LBRACE  shift, and go to state 6
+
+    block  go to state 135
+
+
+state 127
+
+   64 typesrest: COMMA type typesrest .
+
+    $default  reduce using rule 64 (typesrest)
+
+
+state 128
+
+   25 stm: IF LPAR exp RPAR stm ELSE stm .
+
+    $default  reduce using rule 25 (stm)
+
+
+state 129
+
+   27 stm: FOR LPAR vardec exp SEMICOLON exp RPAR . stm
+
+    SEMICOLON      shift, and go to state 5
+    LBRACE         shift, and go to state 6
+    NULLVALUE      shift, and go to state 7
+    TRUE           shift, and go to state 8
+    FALSE          shift, and go to state 9
+    RETURN         shift, and go to state 10
+    IF             shift, and go to state 11
+    WHILE          shift, and go to state 12
+    FOR            shift, and go to state 13
+    HALT           shift, and go to state 14
+    INTLITERAL     shift, and go to state 15
+    FLOATLITERAL   shift, and go to state 16
+    ID             shift, and go to state 17
+    UNOP           shift, and go to state 18
+    CHARLITERAL    shift, and go to state 19
+    STRINGLITERAL  shift, and go to state 20
+    MINUS          shift, and go to state 21
+
+    block     go to state 22
+    stm       go to state 136
+    exp       go to state 24
+    lhs       go to state 25
+    disjunct  go to state 26
+    conjunct  go to state 27
+    simple    go to state 28
+    term      go to state 29
+    factor    go to state 30
+    literal   go to state 31
+
+
+state 130
+
+   22 rtype: VOID .
+
+    $default  reduce using rule 22 (rtype)
+
+
+state 131
+
+   19 type: type . LBRACKET RBRACKET
+   21 rtype: type .
+
+    LBRACKET  shift, and go to state 67
+
+    $default  reduce using rule 21 (rtype)
+
+
+state 132
+
+   20 type: FUNCTION LPAR LPAR types RPAR ARROW rtype . RPAR
+
+    RPAR  shift, and go to state 137
+
+
+state 133
+
+   72 formalsrest: COMMA formal . formalsrest
+
+    COMMA  shift, and go to state 123
+
+    $default  reduce using rule 71 (formalsrest)
+
+    formalsrest  go to state 138
+
+
+state 134
+
+   12 fundec: FUN ID typevars LPAR formals RPAR COLON . rtype block
+
+    VOID      shift, and go to state 130
+    FUNCTION  shift, and go to state 32
+    ID        shift, and go to state 34
+    TVAR      shift, and go to state 35
+    PRIMTYPE  shift, and go to state 36
+
+    typeapp  go to state 37
+    type     go to state 131
+    rtype    go to state 139
+    typeid   go to state 43
+
+
+state 135
+
+   11 fundec: FUN ID typevars LPAR formals RPAR block .
+
+    $default  reduce using rule 11 (fundec)
+
+
+state 136
+
+   27 stm: FOR LPAR vardec exp SEMICOLON exp RPAR stm .
+
+    $default  reduce using rule 27 (stm)
+
+
+state 137
+
+   20 type: FUNCTION LPAR LPAR types RPAR ARROW rtype RPAR .
+
+    $default  reduce using rule 20 (type)
+
+
+state 138
+
+   72 formalsrest: COMMA formal formalsrest .
+
+    $default  reduce using rule 72 (formalsrest)
+
+
+state 139
+
+   12 fundec: FUN ID typevars LPAR formals RPAR COLON rtype . block
+
+    LBRACE  shift, and go to state 6
+
+    block  go to state 140
+
+
+state 140
+
+   12 fundec: FUN ID typevars LPAR formals RPAR COLON rtype block .
+
+    $default  reduce using rule 12 (fundec)

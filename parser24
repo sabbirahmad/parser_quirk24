@@ -11,8 +11,8 @@ flex lexical_analyzer.l
 bison -d parser_generator.y
 gcc parser_generator.tab.c lex.yy.c -o run_parser.out
 
-astFile="$(cut -d'.' -f1 <<<"$1")"
-ext=".ast"
-astFile=$astFile$ext
-
-./run_parser.out $1 > $astFile
+#astFile="$(cut -d'.' -f1 <<<"$1")"
+#ext=".ast"
+#astFile=$astFile$ext
+#./run_parser.out $1 > $astFile
+./run_parser.out $1 > $2
