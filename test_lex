@@ -6,8 +6,12 @@
 #	echo "" > "$header_file"
 #fi
 
-flex lexical_analyzer.l
-gcc lex.yy.c -o lexical_analyzer.out
+#flex lexical_analyzer.l
+#gcc lex.yy.c -o lexical_analyzer.out
 
-./lexical_analyzer.out $1
+#./lexical_analyzer.out $1
 
+flex -o typeid.yy.c lexanalyze.l
+gcc typeid.yy.c -o find_typeid.out
+
+./find_typeid.out $1

@@ -1,3 +1,6 @@
  {
+   fun forEach<T2> (function ((T) -> T2) f) : int { 
+     int x = 10;
+   }
    x = 10;
  }

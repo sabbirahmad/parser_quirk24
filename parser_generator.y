@@ -9,11 +9,14 @@
 int yyerror(char *s);
 int yylex(void);
 int yyparse();
+int inittypeid();
 char * ccstr(char *s1, const char *s2);  // concat strings s2 to end of s1 and return s1
 char * initstr(char *s);
 char * extchar(char *s);
 
 int call_no = 1;
+
+
 
 %}
 
@@ -26,9 +29,9 @@ int call_no = 1;
 
 %token SEMICOLON COMMA COLON LPAR RPAR LBRACE RBRACE LBRACKET RBRACKET ARROW DOT VOID NULLVALUE TRUE FALSE FUNCTION PROTOCOL EXTENDS IMPLEMENTS FUN CLASS RETURN IF ELSE WHILE FOR HALT NEW LAMBDA THIS
 
-%token	<sval>  INTLITERAL FLOATLITERAL ID TVAR ASSIGNOP OROP ANDOP RELOP ADDOP MULOP UNOP PRIMTYPE CHARLITERAL STRINGLITERAL MINUS LANGLE RANGLE
+%token	<sval>  INTLITERAL FLOATLITERAL ID TVAR ASSIGNOP OROP ANDOP RELOP ADDOP MULOP UNOP PRIMTYPE CHARLITERAL STRINGLITERAL MINUS LANGLE RANGLE TYPEID
 
-%type   <sval>  program protodecs classdecs stm stms exp lhs disjunct conjunct simple term factor factorrest literal block localdecs localdec vardec type types formal formals fundec fundecs typevars tvars rtype typesrest formalsrest typeapp typeapps typeid typeappsrest
+%type   <sval>  program protodecs classdecs stm stms exp lhs disjunct conjunct simple term factor factorrest literal block localdecs localdec vardec type types formal formals fundec fundecs typevars tvars rtype typesrest formalsrest typeapp typeapps typeappsrest
 
 %left	ADDOP
 %left	MULOP
@@ -52,8 +55,8 @@ typevars:
        |LANGLE tvars RANGLE             { fprintf(stderr, "%d: typevars2\n", call_no++); char *tvr; tvr = initstr(tvr); $$ = strdup(ccstr(tvr, $2));}
        ;
 typeapp:
-        typeid                          { fprintf(stderr, "%d: typeapp1\n", call_no++); char *tap; tap = initstr(tap); tap = ccstr(tap, "(typeApp "); tap = ccstr(tap, $1); tap = ccstr(tap, " ( "); $$ = strdup(ccstr(tap, " ))")); }
-       |typeid LANGLE types RANGLE      { fprintf(stderr, "%d: typeapp2\n", call_no++); char *tap; tap = initstr(tap); tap = ccstr(tap, "(typeApp "); tap = ccstr(tap, $1); tap = ccstr(tap, " ( "); tap = ccstr(tap, $3); $$ = strdup(ccstr(tap, " ))")); }
+        TYPEID                          { fprintf(stderr, "%d: typeapp1\n", call_no++); char *tap; tap = initstr(tap); tap = ccstr(tap, "(typeApp "); tap = ccstr(tap, $1); tap = ccstr(tap, " ( "); $$ = strdup(ccstr(tap, " ))")); }
+       |TYPEID LANGLE types RANGLE      { fprintf(stderr, "%d: typeapp2\n", call_no++); char *tap; tap = initstr(tap); tap = ccstr(tap, "(typeApp "); tap = ccstr(tap, $1); tap = ccstr(tap, " ( "); tap = ccstr(tap, $3); $$ = strdup(ccstr(tap, " ))")); }
        |TVAR                            { fprintf(stderr, "%d: typeapp3\n", call_no++); char *tap; tap = initstr(tap); tap = ccstr(tap, "(tVar "); tap = ccstr(tap, $1); $$ = strdup(ccstr(tap, ")")); }
        ;
 formal:
@@ -179,11 +182,15 @@ formalsrest:
                                         { fprintf(stderr, "%d: formalrest1\n", call_no++); $$ = ""; }
        |COMMA formal formalsrest        { fprintf(stderr, "%d: formalrest2\n", call_no++); char *fmr; fmr = initstr(fmr); fmr = ccstr(fmr, $2); $$ = strdup(ccstr(fmr, $3)); }        
        ;
-typeid:
-        ID                              { fprintf(stderr, "%d: typeid\n", call_no++); $$ = strdup($1); }
-       ;
+
 
 %%
+/*
+  // deleted rules
+  typeid:
+        ID                              { fprintf(stderr, "%d: typeid\n", call_no++); $$ = strdup($1); }
+       ; 
+*/
 
 //fprintf(stderr, "STRING: %s----------\n", dis); 
 
@@ -229,7 +236,8 @@ int main(int argc, char **argv)
                 fprintf(stderr, "argv[0]: File %s cannot be opened.\n", argv[1]) ;
                 exit( 1 );
         }
-  
+        inittypeid();
+        
         yyparse();
 
         return 0;

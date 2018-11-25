@@ -1,1 +1,1 @@
-(illegal)
+(program () () (block ((funDec forEach(T2) ((formal (funType ((tVar T)) (tVar T2)) f)) (int) (block ((varDec (int) x (intLiteral 10))) ()))) ((expStm (assign x (intLiteral 10))))))
