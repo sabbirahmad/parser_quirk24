@@ -37,6 +37,8 @@ typeid          protocol[ \t]+[a-z][a-zA-Z0-9_]*
 "true"          { /*printf("%s\n", strdup(yytext));*/ return TRUE; }
 "false"         { /*printf("%s\n", strdup(yytext));*/ return FALSE; }
 
+"constant"      { /*printf("%s\n", strdup(yytext));*/ return CONSTANT; }
+"static"        { /*printf("%s\n", strdup(yytext));*/ return STATIC; }
 "function"      { /*printf("%s\n", strdup(yytext));*/ return FUNCTION; }
 "protocol"      { /*printf("%s\n", strdup(yytext));*/ return PROTOCOL; }
 "extends"       { /*printf("%s\n", strdup(yytext));*/ return EXTENDS; }
@@ -51,7 +53,6 @@ typeid          protocol[ \t]+[a-z][a-zA-Z0-9_]*
 "halt"          { /*printf("%s\n", strdup(yytext));*/ return HALT; }
 "new"           { /*printf("%s\n", strdup(yytext));*/ return NEW; }
 "lambda"        { /*printf("%s\n", strdup(yytext));*/ return LAMBDA; }
-"this"          { /*printf("%s\n", strdup(yytext));*/ return THIS; }
 
 {intliteral}	{ /*printf("intliteral %d\n", atoi(strdup(yytext)));*/ yylval.sval = strdup(yytext); return INTLITERAL; }
 {floatliteral}	{ /*printf("floatliteral %f\n", atof(strdup(yytext)));*/ yylval.sval = strdup(yytext); return FLOATLITERAL; }
@@ -98,6 +99,8 @@ typeid          protocol[ \t]+[a-z][a-zA-Z0-9_]*
 .		{ fprintf(stderr, "SCANNER "); /*printf("------UNKNOWN CHARACTER ENCOUNTERED!------\n---%s\n", strdup(yytext));*/ yyerror(""); /*printf("\nLines: %d", yylineno);*/ exit(1); }
 
 %%
+
+/*"this"          { printf("%s\n", strdup(yytext)); return THIS; }*/
 
 char* extract_typeid_name(char *s)
 {
