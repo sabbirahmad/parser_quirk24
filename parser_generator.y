@@ -31,7 +31,7 @@ int call_no = 1;
 
 %token	<sval>  INTLITERAL FLOATLITERAL ID TVAR ASSIGNOP OROP ANDOP RELOP ADDOP MULOP UNOP PRIMTYPE CHARLITERAL STRINGLITERAL MINUS LANGLE RANGLE PROTOCOL TYPEID 
 
-%type   <sval>  program protodecs classdecs stm stms exp lhs disjunct conjunct simple term factor factorrest literal block localdecs localdec vardec type types formal formals fundec fundecs typevars tvars rtype typesrest formalsrest typeapp typeapps typeappsrest actuals actualsrest protodec extends funproto classdec bodydec init classbody constdec globaldec fielddec funprotos bodydecs
+%type   <sval>  program protodecs classdecs stm stms exp lhs disjunct conjunct simple term factor factorrest literal block localdecs localdec vardec type types formal formals fundec typevars tvars rtype typesrest formalsrest typeapp typeapps typeappsrest actuals actualsrest protodec extends funproto classdec bodydec init classbody constdec globaldec fielddec funprotos bodydecs /*fundecs*/
 
 %left	ADDOP
 %left	MULOP
@@ -205,10 +205,13 @@ classdecs:
                                         { fprintf(stderr, "%d: classdecs1\n", call_no++); $$ = ""; }
        |classdec classdecs              { fprintf(stderr, "%d: classdecs2\n", call_no++); char *cld; cld = initstr(cld); cld = ccstr(cld, $1); $$ = strdup(ccstr(cld, $2)); }                                        
        ; 
+/*
+//commented out, because no rule uses this
 fundecs:
                                         { fprintf(stderr, "%d: fundecs1\n", call_no++); $$ = ""; }
        |fundec fundecs                  { fprintf(stderr, "%d: fundecs2\n", call_no++); char *fnd; fnd = initstr(fnd); fnd = ccstr(fnd, $1); $$ = strdup(ccstr(fnd, $2)); }        
        ;
+*/
 types:
                                         { fprintf(stderr, "%d: types1\n", call_no++); $$ = ""; }
        |type typesrest                  { fprintf(stderr, "%d: types2\n", call_no++); char *typ; typ = initstr(typ); typ = ccstr(typ, $1); $$ = strdup(ccstr(typ, $2)); }        
