@@ -1,14 +1,3 @@
-protocol list<T> {
-    fun empty () : list<T>;
-    fun forEach<T2> (function ((T) -> T2) f);
-    fun map<T2> (function ((T) -> T2) f) : list<T2>;
-}
-class emptyList<T> implements list<T> {
-    () { }
-
-    fun empty () : list<T> { return this; }
-}
-
 {
-  ;
+  x;
 }

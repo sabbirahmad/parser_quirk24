@@ -1,1 +1,1 @@
-(program ( (protoDec list (T) () ((funProto empty () () (typeApp list ( (tVar T) )))(funProto forEach (T2) ((formal (funType ((tVar T)) (tVar T2)) f)) (void))(funProto map (T2) ((formal (funType ((tVar T)) (tVar T2)) f)) (typeApp list ( (tVar T2) ))))) ) ( (classDec emptyList (T) ((typeApp list ( (tVar T) ))) (init ()(block () ())) ((funDec empty() () (typeApp list ( (tVar T) )) (block () ((return this)))))) ) (block () ((skip))))
+(program () () (block () ((expStm x))))

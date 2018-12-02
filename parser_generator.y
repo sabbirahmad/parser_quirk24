@@ -13,6 +13,7 @@ int inittypeid();
 char * ccstr(char *s1, const char *s2);  // concat strings s2 to end of s1 and return s1
 char * initstr(char *s);
 char * extchar(char *s);
+char* extparts(char *s, int pos);
 
 int call_no = 1;
 
@@ -41,13 +42,12 @@ int call_no = 1;
 %%
 
 program:
-       protodecs classdecs stm          { fprintf(stderr, "%d: program\n", call_no++); char *prg; prg = initstr(prg); prg = ccstr(prg, "(program ( "); prg = ccstr(prg, $1); prg = ccstr(prg, " ) ( "); prg = ccstr(prg, $2); prg = ccstr(prg, " ) "); prg = ccstr(prg, $3); $$ = strdup(ccstr(prg, ")")); /*free(prg);*/ puts($$); }
+       protodecs classdecs stm          { fprintf(stderr, "%d: program\n", call_no++); char *prg; prg = initstr(prg); prg = ccstr(prg, "(program ("); prg = ccstr(prg, $1); prg = ccstr(prg, ") ("); prg = ccstr(prg, $2); prg = ccstr(prg, ") "); prg = ccstr(prg, $3); $$ = strdup(ccstr(prg, ")")); /*free(prg);*/ puts($$); }
        |                                { printf("(illegal)"); }
        ;
 protodec:
         PROTOCOL typevars extends LBRACE funprotos RBRACE       { fprintf(stderr, "%d: protodec\n", call_no++); char *prt; prt = initstr(prt); prt = ccstr(prt, "(protoDec "); prt = ccstr(prt, $1); prt = ccstr(prt, " ("); prt = ccstr(prt, $2); prt = ccstr(prt, ") ("); prt = ccstr(prt, $3); prt = ccstr(prt, ") ("); prt = ccstr(prt, $5); $$ = strdup(ccstr(prt, "))")); }
        ;
-
 typevars:
                                         { fprintf(stderr, "%d: typevars1\n", call_no++); $$ = ""; }
        |LANGLE tvars RANGLE             { fprintf(stderr, "%d: typevars2\n", call_no++); char *tvr; tvr = initstr(tvr); $$ = strdup(ccstr(tvr, $2)); }
@@ -164,13 +164,13 @@ factor:
        |LAMBDA LPAR formals RPAR block factorrest               { fprintf(stderr, "%d: factor7\n", call_no++); $$ = ""; }
        |LAMBDA LPAR formals RPAR COLON rtype block factorrest           { fprintf(stderr, "%d: factor8\n", call_no++); $$ = ""; }
        |LPAR exp RPAR factorrest        { fprintf(stderr, "%d: factor9\n", call_no++); $$ = ""; }
-       |ID factorrest                   { fprintf(stderr, "%d: factor10\n", call_no++); char *fac; fac = initstr(fac); $$ = strdup(ccstr(fac, $1)); /*free(fac);*/ }
+       |ID factorrest                   { fprintf(stderr, "%d: factor10\n", call_no++); char *fac; fac = initstr(fac); char *p1 = extparts($2, 0); char *p2 = extparts($2, 1); fac = ccstr(fac, p1); fac = ccstr(fac, $1); $$ = strdup(ccstr(fac, p2)); }
        ;
 factorrest:
                                         { fprintf(stderr, "%d: factorrest1\n", call_no++); $$ = ""; }
        |LPAR actuals RPAR factorrest    { fprintf(stderr, "%d: factorrest2\n", call_no++); $$ = ""; }
        |DOT ID factorrest               { fprintf(stderr, "%d: factorrest3\n", call_no++); $$ = ""; }
-       |LBRACKET exp RBRACKET factorrest        { fprintf(stderr, "%d: factorrest4\n", call_no++); $$ = ""; }
+       |LBRACKET exp RBRACKET factorrest{ fprintf(stderr, "%d: factorrest4\n", call_no++); char *frr; frr = initstr(frr); char *p1 = extparts($4, 0); char *p2 = extparts($4, 1); frr = ccstr(frr, p1); frr = ccstr(frr, "(aref , "); frr = ccstr(frr, $2); frr = ccstr(frr, ")"); $$ = strdup(ccstr(frr, p2)); }
        ;
 literal:
         NULLVALUE                       { fprintf(stderr, "%d: literal1\n", call_no++); char *lit; lit = initstr(lit); $$ = strdup(ccstr(lit, "(null)")); }
@@ -258,6 +258,22 @@ actualsrest:
 */
 
 //fprintf(stderr, "STRING: %s----------\n", dis); 
+
+char* extparts(char *s, int pos)
+{
+        char *token;
+        char *str = strdup(s);
+        if(!strcmp(str, "")){
+                return "";
+        }
+
+        token = strtok(str, ",");
+        if(pos){
+                token = strtok(NULL, ",");
+        }
+        
+        return token;
+}
 
 char * extchar(char *s)
 {
