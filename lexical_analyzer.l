@@ -23,12 +23,15 @@ digit		[0-9]
 intliteral	{digit}+
 id		[a-z][a-zA-Z0-9_]*
 tvar		[A-Z][a-zA-Z0-9_]*
-floatliteral	[0-9]*\.?[0-9]+([e][-+]?[0-9]+)?
+floatliteral    ([0-9]+\.[0-9]*([e][-+]?[0-9]+)?)|([0-9]*\.[0-9]+([e][-+]?[0-9]+)?)
 charliteral     \'[ a-zA-Z0-9_~#$%&()\*+\-\,\.\/:;<=>?@\[\]^\{\}~]\'
 stringliteral   \"[ a-zA-Z0-9_~#$%&()\*+\-\,\.\/:;<=>?@\[\]^\{\}~]*\"
 typeid          protocol[ \t]+[a-z][a-zA-Z0-9_]*  
 
 %%
+
+{intliteral}	{ /*printf("intliteral %d\n", atoi(strdup(yytext)));*/ yylval.sval = strdup(yytext); return INTLITERAL; }
+{floatliteral}	{ /*printf("floatliteral %f\n", atof(strdup(yytext)));*/ yylval.sval = strdup(yytext); return FLOATLITERAL; } 
 
 {typeid}        { /*fprintf(stderr, "typeid %s\n", strdup(yytext));*/ char *prt = extract_typeid_name(strdup(yytext)); store_typeid(prt); yylval.sval = strdup(prt); return PROTOCOL; }
 "void"          { /*printf("%s\n", strdup(yytext));*/ return VOID; }
@@ -54,8 +57,7 @@ typeid          protocol[ \t]+[a-z][a-zA-Z0-9_]*
 "new"           { /*printf("%s\n", strdup(yytext));*/ return NEW; }
 "lambda"        { /*printf("%s\n", strdup(yytext));*/ return LAMBDA; }
 
-{intliteral}	{ /*printf("intliteral %d\n", atoi(strdup(yytext)));*/ yylval.sval = strdup(yytext); return INTLITERAL; }
-{floatliteral}	{ /*printf("floatliteral %f\n", atof(strdup(yytext)));*/ yylval.sval = strdup(yytext); return FLOATLITERAL; }
+
 {id}		{ /*fprintf(stderr, "id %s\n", strdup(yytext));*/ yylval.sval = strdup(yytext);
                         if (check_id_typeid(strdup(yytext)) == 1)
                         {

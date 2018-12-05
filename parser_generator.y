@@ -157,19 +157,19 @@ term:
 factor:
         UNOP factor                     { fprintf(stderr, "%d: factor1\n", call_no++); char *fac; fac = initstr(fac); fac = ccstr(fac, "(unOpn "); fac = ccstr(fac, $1); fac = ccstr(fac, " "); fac = ccstr(fac, $2); $$ = strdup(ccstr(fac, ")")); }
        |MINUS factor                    { fprintf(stderr, "%d: factor2\n", call_no++); char *fac; fac = initstr(fac); fac = ccstr(fac, "(unOpn "); fac = ccstr(fac, $1); fac = ccstr(fac, " "); fac = ccstr(fac, $2); $$ = strdup(ccstr(fac, ")")); }
-       |literal factorrest              { fprintf(stderr, "%d: factor3\n", call_no++); char *fac; fac = initstr(fac); $$ = strdup(ccstr(fac, $1)); }
-       |NEW ID LPAR actuals RPAR factorrest             { fprintf(stderr, "%d: factor4\n", call_no++); $$ = ""; }
-       |NEW ID LANGLE types RANGLE LPAR actuals RPAR factorrest         { fprintf(stderr, "%d: factor5\n", call_no++); $$ = ""; }
-       |NEW type LBRACKET exp RBRACKET factorrest               { fprintf(stderr, "%d: factor6\n", call_no++); $$ = ""; }
-       |LAMBDA LPAR formals RPAR block factorrest               { fprintf(stderr, "%d: factor7\n", call_no++); $$ = ""; }
-       |LAMBDA LPAR formals RPAR COLON rtype block factorrest           { fprintf(stderr, "%d: factor8\n", call_no++); $$ = ""; }
-       |LPAR exp RPAR factorrest        { fprintf(stderr, "%d: factor9\n", call_no++); $$ = ""; }
+       |literal factorrest              { fprintf(stderr, "%d: factor3\n", call_no++); char *fac; fac = initstr(fac); char *p1 = extparts($2, 0); char *p2 = extparts($2, 1); fac = ccstr(fac, p1); fac = ccstr(fac, $1); $$ = strdup(ccstr(fac, p2)); }
+       |NEW ID LPAR actuals RPAR factorrest             { fprintf(stderr, "%d: factor4\n", call_no++); char *fac; fac = initstr(fac); char *p1 = extparts($6, 0); char *p2 = extparts($6, 1); fac = ccstr(fac, p1); fac = ccstr(fac, "(newObject "); fac = ccstr(fac, $2); fac = ccstr(fac, "("); fac = ccstr(fac, $4); fac = ccstr(fac, "))"); $$ = strdup(ccstr(fac, p2)); }
+       |NEW ID LANGLE types RANGLE LPAR actuals RPAR factorrest         { fprintf(stderr, "%d: factor5\n", call_no++); char *fac; fac = initstr(fac); char *p1 = extparts($9, 0); char *p2 = extparts($9, 1); fac = ccstr(fac, p1); fac = ccstr(fac, "(newObject (classApp "); fac = ccstr(fac, $2); fac = ccstr(fac, "("); fac = ccstr(fac, $4); fac = ccstr(fac, "))"); fac = ccstr(fac, "("); fac = ccstr(fac, $7); fac = ccstr(fac, "))"); $$ = strdup(ccstr(fac, p2)); }
+       |NEW type LBRACKET exp RBRACKET factorrest               { fprintf(stderr, "%d: factor6\n", call_no++); char *fac; fac = initstr(fac); char *p1 = extparts($6, 0); char *p2 = extparts($6, 1); fac = ccstr(fac, p1); fac = ccstr(fac, "(newArray "); fac = ccstr(fac, $2); fac = ccstr(fac, " "); fac = ccstr(fac, $4); fac = ccstr(fac, ")"); $$ = strdup(ccstr(fac, p2)); }
+       |LAMBDA LPAR formals RPAR block factorrest               { fprintf(stderr, "%d: factor7\n", call_no++); $$=""; }
+       |LAMBDA LPAR formals RPAR COLON rtype block factorrest           { fprintf(stderr, "%d: factor8\n", call_no++); $$=""; }
+       |LPAR exp RPAR factorrest        { fprintf(stderr, "%d: factor9\n", call_no++); char *fac; fac = initstr(fac); char *p1 = extparts($4, 0); char *p2 = extparts($4, 1); fac = ccstr(fac, p1); fac = ccstr(fac, $2); $$ = strdup(ccstr(fac, p2)); }
        |ID factorrest                   { fprintf(stderr, "%d: factor10\n", call_no++); char *fac; fac = initstr(fac); char *p1 = extparts($2, 0); char *p2 = extparts($2, 1); fac = ccstr(fac, p1); fac = ccstr(fac, $1); $$ = strdup(ccstr(fac, p2)); }
        ;
 factorrest:
                                         { fprintf(stderr, "%d: factorrest1\n", call_no++); $$ = ""; }
-       |LPAR actuals RPAR factorrest    { fprintf(stderr, "%d: factorrest2\n", call_no++); $$ = ""; }
-       |DOT ID factorrest               { fprintf(stderr, "%d: factorrest3\n", call_no++); $$ = ""; }
+       |LPAR actuals RPAR factorrest    { fprintf(stderr, "%d: factorrest2\n", call_no++); char *frr; frr = initstr(frr); char *p1 = extparts($4, 0); char *p2 = extparts($4, 1); frr = ccstr(frr, p1); frr = ccstr(frr, "(call , ("); frr = ccstr(frr, $2); frr = ccstr(frr, ")"); frr = ccstr(frr, ")"); $$ = strdup(ccstr(frr, p2)); }
+       |DOT ID factorrest               { fprintf(stderr, "%d: factorrest3\n", call_no++); char *frr; frr = initstr(frr); char *p1 = extparts($3, 0); char *p2 = extparts($3, 1); frr = ccstr(frr, p1); frr = ccstr(frr, "(dot , "); frr = ccstr(frr, $2); frr = ccstr(frr, ")"); $$ = strdup(ccstr(frr, p2)); }
        |LBRACKET exp RBRACKET factorrest{ fprintf(stderr, "%d: factorrest4\n", call_no++); char *frr; frr = initstr(frr); char *p1 = extparts($4, 0); char *p2 = extparts($4, 1); frr = ccstr(frr, p1); frr = ccstr(frr, "(aref , "); frr = ccstr(frr, $2); frr = ccstr(frr, ")"); $$ = strdup(ccstr(frr, p2)); }
        ;
 literal:

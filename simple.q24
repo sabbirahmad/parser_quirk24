@@ -1,3 +1,10 @@
 {
-  x;
+  //x[b=2][c][10];
+  //10(x);
+  //10..x;
+
+  //x.y(a).z();
+  //new x(p.q).y(a).z();
+  //new emptyList<int>();
+  new bool[n];
 }

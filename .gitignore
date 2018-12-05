@@ -9,4 +9,5 @@ lex.yy.c
 
 # ignoded folders
 example/
+.temp/
 
