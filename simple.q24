@@ -1,9 +1,3 @@
-// Sieve of Eratosthenes.
-
-protocol primes {
-    fun printPrimes ();                // prints a bunch of primes
-}
-
 protocol list<T> {
     fun empty () : list<T>;
     fun with (T z) : list<T>;
@@ -16,6 +10,12 @@ protocol list<T> {
     fun forEach<T2> (function ((T) -> T2) f);
     fun map<T2> (function ((T) -> T2) f) : list<T2>;
 }
+
+//'a'
+
+// this is test comment
+
+//'aasd'
 
 class emptyList<T> implements list<T> {
     () { }
@@ -115,70 +115,5 @@ class linkedList<T> implements list<T> {
     }
 }
 
-////////////////////////////////////////////////////////////////
-
-class eratosthenes implements primes {
-
-    (int n) {
-        this.n = n;
-        flags = new bool[n];
-        for (int i = 0; i < n; i = i + 1)
-            flags[i] = true;
-        thePrimes = new emptyList<int>();
-    }
-
-    int n;
-
-    bool[] flags;
-
-    list<int> thePrimes;
-
-    // Prints all primes less than n.
-
-    fun printPrimes () {
-        if (n > 2 && thePrimes.isEmpty())
-            sieve();
-        else;
-        thePrimes.forEach (lambda (int n) {
-                               printInt(n);
-                               printLine();
-                           });
-    }
-
-    // Precondition: n > 2
-    // and sieve has not been called previously.
-
-    fun sieve () {
-        int p = 2;
-        flags[0] = false;
-        flags[1] = false;
-        while (p < n) {
-            if (flags[p]) {
-                int i = p + p;
-                thePrimes = thePrimes.with (p);
-                while (i < n) {
-                    flags[i] = false;
-                    i = i + p;
-                }
-            }
-            else;
-            p = p + 1;
-        }
-    }
-}
-
-{
-    int n = readInt();
-    primes g = new eratosthenes(n);
-    g.printPrimes();
-    printLine();
-
-    // This tests whether a second call to printPrimes() works properly,
-    // but it's annoying to print a whole lot of primes twice so the test
-    // is performed only for small values of n.
-
-    if (n < 20)
-        g.printPrimes();
-    else;
-}
+;
 

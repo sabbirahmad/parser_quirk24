@@ -72,16 +72,17 @@ typeid          protocol[ \t]+[a-z][a-zA-Z0-9_]*
 
 {tvar}		{ /*printf("typevar %s\n", strdup(yytext));*/ yylval.sval = strdup(yytext); return TVAR; }
 "->"		{ /*printf("%s\n", strdup(yytext));*/ return ARROW; }
-"||"		{ /*printf("orop %s\n", strdup(yytext));*/ yylval.sval= strdup(yytext); return OROP; }
-"&&"		{ /*printf("andop %s\n", strdup(yytext));*/ yylval.sval= strdup(yytext); return ANDOP; }
-"=="|"!="|"<="|">="             { /*printf("relop %s\n", strdup(yytext));*/ yylval.sval= strdup(yytext); return RELOP; }
-"<"		{ /*printf("%s\n", strdup(yytext));*/ yylval.sval= strdup(yytext); return LANGLE; }
-">"		{ /*printf("%s\n", strdup(yytext));*/ yylval.sval= strdup(yytext); return RANGLE; }
-"="		{ /*printf("assignop %s\n", strdup(yytext));*/ yylval.sval= strdup(yytext); return ASSIGNOP; }
-"+"		{ /*fprintf(stderr, "addop %s\n", strdup(yytext));*/ yylval.sval= strdup(yytext); return ADDOP; }
-"*"|"/"		{ /*printf("mulop %s\n", strdup(yytext));*/ yylval.sval= strdup(yytext); return MULOP; }
-"!"		{ /*fprintf(stderr, "unop %s[unop]\n", strdup(yytext));*/ yylval.sval= strdup(yytext); return UNOP; }
-"-"		{ /*fprintf(stderr, "unop %s[unop]\n", strdup(yytext));*/ yylval.sval= strdup(yytext); return MINUS; }
+"||"		{ /*printf("orop %s\n", strdup(yytext));*/ yylval.sval = strdup(yytext); return OROP; }
+"&&"		{ /*printf("andop %s\n", strdup(yytext));*/ yylval.sval = strdup(yytext); return ANDOP; }
+"=="            { /*printf("relop %s\n", strdup(yytext));*/ yylval.sval = strdup("="); return RELOP; }
+"!="|"<="|">="  { /*printf("relop %s\n", strdup(yytext));*/ yylval.sval = strdup(yytext); return RELOP; }
+"<"		{ /*printf("%s\n", strdup(yytext));*/ yylval.sval = strdup(yytext); return LANGLE; }
+">"		{ /*printf("%s\n", strdup(yytext));*/ yylval.sval = strdup(yytext); return RANGLE; }
+"="		{ /*printf("assignop %s\n", strdup(yytext));*/ yylval.sval = strdup(yytext); return ASSIGNOP; }
+"+"		{ /*fprintf(stderr, "addop %s\n", strdup(yytext));*/ yylval.sval = strdup(yytext); return ADDOP; }
+"*"|"/"		{ /*printf("mulop %s\n", strdup(yytext));*/ yylval.sval = strdup(yytext); return MULOP; }
+"!"		{ /*fprintf(stderr, "unop %s[unop]\n", strdup(yytext));*/ yylval.sval = strdup(yytext); return UNOP; }
+"-"		{ /*fprintf(stderr, "unop %s[unop]\n", strdup(yytext));*/ yylval.sval = strdup(yytext); return MINUS; }
 ";"		{ /*printf("semicolon %s at Line %d\n", strdup(yytext), yylineno);*/ return SEMICOLON; }
 ":"		{ /*printf("colon %s\n", strdup(yytext));*/ return COLON; }
 ","		{ /*printf("comma %s\n", strdup(yytext));*/ return COMMA; }
