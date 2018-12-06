@@ -12,7 +12,7 @@ int check_id_typeid(char *id);
 int store_typeid(char *s);
 int inittypeid();
 char* extract_typeid_name(char *s);
-
+char* manage_string(char *s);
 char **typeid_array;
 int initial_typeid_limit = 1;
 int typeid_count = 0;  
@@ -24,8 +24,9 @@ intliteral	{digit}+
 id		[a-z][a-zA-Z0-9_]*
 tvar		[A-Z][a-zA-Z0-9_]*
 floatliteral    ([0-9]+\.[0-9]*([e][-+]?[0-9]+)?)|([0-9]*\.[0-9]+([e][-+]?[0-9]+)?)
-charliteral     \'[ a-zA-Z0-9_~#$%&()\*+\-\,\.\/:;<=>?@\[\]^\{\}~]\'
-stringliteral   \"[ a-zA-Z0-9_~#$%&()\*+\-\,\.\/:;<=>?@\[\]^\{\}~]*\"
+charliteral     \'[ a-zA-Z0-9_~#$%&!()\"\*+\-\,\.\/\\:;<=>?@\[\]^\{\}~]\'
+/*stringliteral   \"[ a-zA-Z0-9_~#$%&()\*+\-\,\.\/:;<=>?@\[\]^\{\}~]*\" */
+stringliteral   \"[ a-zA-Z0-9_~#$%&!()\n\r\'\*+\-\,\.\/\\:;<=>?@\[\]^\{\}~]*\"
 typeid          protocol[ \t]+[a-z][a-zA-Z0-9_]*  
 
 %%
@@ -94,9 +95,9 @@ typeid          protocol[ \t]+[a-z][a-zA-Z0-9_]*
 "]"		{ /*printf("%s\n", strdup(yytext));*/ return RBRACKET; }
 \.		{ /*printf("%s\n", strdup(yytext));*/ return DOT; }
 \/\/.*		{ /*printf("COMMENT %s\n", strdup(yytext));*/ }
-{charliteral}   { /*printf("charliteral %s\n", strdup(yytext));*/ yylval.sval= strdup(yytext); return CHARLITERAL; } 
-{stringliteral} { /*printf("stringliteral %s\n", strdup(yytext));*/ yylval.sval= strdup(yytext); return STRINGLITERAL; } 
-[ \t]*		{}
+{charliteral}   { /*printf("charliteral %s\n", strdup(yytext));*/ yylval.sval = strdup(yytext); return CHARLITERAL; } 
+{stringliteral} { /*printf("stringliteral %s\n", strdup(yytext));*/ char *str = manage_string(strdup(yytext)); yylval.sval = strdup(str); return STRINGLITERAL; } 
+[ \t]*		{ }
 [\n]		{ yylineno++;	}
 
 .		{ fprintf(stderr, "SCANNER "); /*printf("------UNKNOWN CHARACTER ENCOUNTERED!------\n---%s\n", strdup(yytext));*/ yyerror(""); /*printf("\nLines: %d", yylineno);*/ exit(1); }
@@ -104,6 +105,35 @@ typeid          protocol[ \t]+[a-z][a-zA-Z0-9_]*
 %%
 
 /*"this"          { printf("%s\n", strdup(yytext)); return THIS; }*/
+
+char* manage_string(char *s)
+{
+        int l = strlen(s);
+        int str_l = 2*l;
+        char *str = (char*) malloc(str_l);
+        int j = 0;
+        for(int i=0; i<l; i++){
+                if (j >= str_l){
+                        str_l = str_l*2;
+                        str = (char *) realloc (str, str_l);
+                }
+                if(s[i] == '\\'){
+                        str[j++] = '\\';
+                        str[j++] = '\\';
+                }
+                else if(s[i] == '\n'){
+                        str[j++] = '\\';
+                        str[j++] = 'n';
+                        yylineno++;
+                }
+                else{
+                        str[j++] = s[i];
+                }
+        }
+        str[j] = '\0';
+
+        return str;
+}
 
 char* extract_typeid_name(char *s)
 {

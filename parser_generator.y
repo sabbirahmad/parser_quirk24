@@ -306,6 +306,7 @@ int yyerror(char *s)
         extern int yylineno;	// defined and maintained in lex.c
         extern char *yytext;	// defined and maintained in lex.c
         fprintf(stderr, "ERROR: %s at symbol on line %d\n", yytext, yylineno);
+        fprintf(stderr, "Bison: %s\n", s);
         printf("(illegal)"); 
         exit(1);
 }
