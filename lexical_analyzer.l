@@ -15,7 +15,11 @@ char* extract_typeid_name(char *s);
 char* manage_string(char *s);
 char **typeid_array;
 int initial_typeid_limit = 1;
-int typeid_count = 0;  
+int typeid_count = 0;
+
+char previous_token[20];
+char current_token[20];
+
 %}
 %option noyywrap
 
@@ -44,7 +48,7 @@ typeid          protocol[ \t]+[a-z][a-zA-Z0-9_]*
 "constant"      { /*printf("%s\n", strdup(yytext));*/ return CONSTANT; }
 "static"        { /*printf("%s\n", strdup(yytext));*/ return STATIC; }
 "function"      { /*printf("%s\n", strdup(yytext));*/ return FUNCTION; }
-"protocol"      { /*printf("%s\n", strdup(yytext));*/ return PROTOCOL; }
+"protocol"      { fprintf(stderr, "SCANNER PROTOCOL "); /*printf("------UNKNOWN CHARACTER ENCOUNTERED!------\n---%s\n", strdup(yytext));*/ yyerror(""); /*printf("\nLines: %d", yylineno);*/ exit(1); }
 "extends"       { /*printf("%s\n", strdup(yytext));*/ return EXTENDS; }
 "implements"    { /*printf("%s\n", strdup(yytext));*/ return IMPLEMENTS; }
 "fun"           { /*printf("%s\n", strdup(yytext));*/ return FUN; }
@@ -98,7 +102,7 @@ typeid          protocol[ \t]+[a-z][a-zA-Z0-9_]*
 {charliteral}   { /*printf("charliteral %s\n", strdup(yytext));*/ yylval.sval = strdup(yytext); return CHARLITERAL; } 
 {stringliteral} { /*printf("stringliteral %s\n", strdup(yytext));*/ char *str = manage_string(strdup(yytext)); yylval.sval = strdup(str); return STRINGLITERAL; } 
 [ \t]*		{ }
-[\n]		{ yylineno++;	}
+[\n]		{ yylineno++; }
 
 .		{ fprintf(stderr, "SCANNER "); /*printf("------UNKNOWN CHARACTER ENCOUNTERED!------\n---%s\n", strdup(yytext));*/ yyerror(""); /*printf("\nLines: %d", yylineno);*/ exit(1); }
 
@@ -112,7 +116,8 @@ char* manage_string(char *s)
         int str_l = 2*l;
         char *str = (char*) malloc(str_l);
         int j = 0;
-        for(int i=0; i<l; i++){
+        int i;
+        for(i=0; i<l; i++){
                 if (j >= str_l){
                         str_l = str_l*2;
                         str = (char *) realloc (str, str_l);
@@ -166,7 +171,8 @@ int store_typeid(char *s)
 
 int check_id_typeid(char *id)
 {
-        for (int i = 0; i < typeid_count; i++) 
+        int i;
+        for (i = 0; i < typeid_count; i++) 
         {
                 if (!strcmp(id, typeid_array[i]))    //see if the id matches with any typeid
                 {
