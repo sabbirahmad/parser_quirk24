@@ -1,0 +1,175 @@
+Syntax of quirk24 abstract syntax trees.  [Revision -1]
+
+The CFG below describes the textual representation of the
+abstract syntax trees produced by quirk24 parsers and type
+checkers.  There are some small differences between the
+abstract syntax trees produced by parsers and the abstract
+syntax trees produced by type checkers.  Abstract syntax
+trees produced by parsers do not include any of the following
+unary and binary operations:
+
+    deref     int2float           float2int
+    =:int     !=:int    <:int     <=:int     >:int     >=:int
+    +:int     -:int     *:int     /:int
+    =:flt     !=:flt    <:flt     <=:flt     >:flt     >=:flt
+    +:flt     -:flt     *:flt     /:flt
+
+Abstract syntax trees produced by type checkers do not include
+any of the following unary and binary operations:
+
+    =     !=    <     <=     >     >=
+    +     -     *     /
+
+If a program's abstract syntax tree is (illegal), that means
+the program is syntactically incorrect or not well-typed.
+Parsers should produce that representation if the quirk24
+program contains a syntax error, and type checkers should
+produce that representation if their input is (illegal) or
+is not well-typed.
+
+The textual representation of an abstract syntax tree is the
+external representation of a Scheme list as defined by the
+R7RS standard.  That implies that tokens are separated by
+whitespace, but no whitespace is allowed inside tokens other
+than strings.
+
+To simplify interoperation between components written by
+different students, only three ASCII characters are allowed as
+whitespace: space (0x20), linefeed (0xa), and return (0xd).
+Tab characters are forbidden.
+
+
+<program>       ::=  (program ( <protodecs> ) ( <classdecs> ) <stm>)
+                  |  (illegal)
+<protodec>      ::=  (protoDec <typeid> (<tvars>) (<typeapps>) (<funprotos>))
+
+<typeapp>       ::=  (typeApp <typeid> ( <types> ))
+                  |  (tVar <tvar>)
+<funproto>      ::=  (funProto <id> (<tvars>) (<formals>) <rtype>)
+
+<classdec>      ::=  (classDec <id> (<tvars>) (<typeapps>) <init> (<bodydecs>))
+
+<init>          ::=  (init (<formals>) <block>)
+
+<bodydec>       ::=  <constdec>
+                  |  <globaldec>
+                  |  <fielddec>
+                  |  <fundec>
+
+<constdec>      ::=  (constant <primtype> <id> <literal>)
+
+<globaldec>     ::=  (static <primtype> <id> <literal>)
+
+<fielddec>      ::=  (fieldDec <formal>)
+
+<formal>        ::=  (formal <type> <id>)
+
+<fundec>        ::=  (funDec <id> (<tvars>) (<formals>) <rtype> <block>)
+
+<block>         ::=  (block (<localdecs>) (<stms>))
+
+<localdec>      ::=  <vardec>
+                  |  <fundec>
+
+<vardec>        ::=  (varDec <type> <id> <exp>)
+
+<type>          ::=  <primtype>
+                  |  <typeapp>
+                  |  (arrayOf <type>)
+                  |  (funType (<types>) <rtype>)
+
+<primtype>      ::=  (bool)
+                  |  (char)
+                  |  (string)
+                  |  (int)
+                  |  (float)
+
+<rtype>         ::=  <type>
+                  |  (void)
+
+<stm>           ::=  (skip)
+                  |  (expStm <exp>)
+                  |  (if <exp> <stm> <stm>)
+                  |  (while <exp> <stm>)
+                  |  (return0)
+                  |  (return <exp>)
+                  |  <block>
+                  |  (halt <exp>)
+
+<exp>           ::=  (assign <exp> <exp>)
+                  |  (unOpn <unop> <exp>)
+                  |  (binOpn <binop> <exp> <exp>)
+                  |  <literal>
+                  |  (newObject <id> (<exps>))
+                  |  (newObject (classApp <id> (<types>)) (<exps>))
+                  |  (newArray <type> <exp>)
+                  |  (lambda (<formals>) <rtype> <block>)
+                  |  <id>
+                  |  (call <exp> (<exps>))
+                  |  (dot <exp> <id>)
+                  |  (aref <exp> <exp>)
+
+<literal>       ::=  (null)  |  (true)  |  (false)
+                  |  (charLiteral <charliteral>)
+                  |  (stringLiteral <stringliteral>)
+                  |  (intLiteral <intliteral>)
+                  |  (floatLiteral <floatliteral>)
+
+<charliteral>   ::=  #\<printable>
+<stringliteral> ::=  "<printables>"
+<intliteral>    ::=  <digit>  |  <digit> <intliteral>
+<floatliteral>  ::=  <intliteral> . <exponent>
+                  |  . <intliteral> <exponent>
+                  |  <intliteral> . <intliteral> <exponent>
+<exponent>      ::=  <empty>
+                  |  e <intliteral>
+                  |  e+ <intliteral>
+                  |  e- <intliteral>
+
+<empty>         ::=
+<tvars>         ::=  <empty>  |  <tvar> <tvars>
+<protodecs>     ::=  <empty>  |  <protodec> <protodecs>
+<typeapps>      ::=  <empty>  |  <typeapp> <typeapps>
+<funprotos>     ::=  <empty>  |  <funproto> <funprotos>
+<classdecs>     ::=  <empty>  |  <classdec> <classdecs>
+<types>         ::=  <empty>  |  <type> <types>
+<bodydecs>      ::=  <empty>  |  <bodydec> <bodydecs>
+<localdecs>     ::=  <empty>  |  <localdec> <localdecs>
+<stms>          ::=  <empty>  |  <stm> <stms>
+<formals>       ::=  <empty>  |  <formal> <formals>
+<exps>          ::=  <empty>  |  <exp> <exps>
+<printables>    ::=  <empty>  |  <printable> <printables>
+
+<binop>         ::=  or
+                  |  and
+                  |  =  |  !=  |  <  |  <=  |  >  |  >=
+                  |  +  |  -  |  *  |  /
+                  |  =:int  |  !=:int  |  <:int  |  <=:int  |  >:int  |  >=:int
+                  |  +:int  |  -:int  |  *:int  |  /:int
+                  |  =:flt  |  !=:flt  |  <:flt  |  <=:flt  |  >:flt  |  >=:flt
+                  |  +:flt  |  -:flt  |  *:flt  |  /:flt
+<unop>          ::=  !  |  -  |  -:int  |  -:flt
+                  |  int2float  |  float2int  |  deref
+
+<id>            ::=  <lcLtr> <subsequent>
+<typeid>        ::=  <id>
+<tvar>          ::=  <ucLtr> <subsequent>
+<subsequent>    ::=  <empty>
+                  |  <lcltr> <subsequent>
+                  |  <ucltr> <subsequent>
+                  |  <digit> <subsequent>
+                  |  <underscore> <subsequent>
+
+<lcltr>         ::=  a  | ... |  z
+<ucltr>         ::=  A  | ... |  Z
+<digit>         ::=  0  |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9
+<underscore>    ::=  _
+<printable>     ::=  <lcltr>  |  <ucltr>  |  <digit>  |  <underscore>
+                  |  <space>  |  !  |  #  |  $  |  %  |  &  |  (  |  )
+                  |  *  |  +  |  ,  |  -  |  .  |  /  |  :  |  ;  |  <
+                  |  =  |  >  |  ?  |  @  |  [  |  ]  |  ^  |  {  |  }
+                  |  ~
+
+Note that backslashes and several kinds of quotation marks are excluded
+from <printable>.  (This is to simplify interoperation with off-the-shelf
+tokenizers that would interpret those characters specially.)

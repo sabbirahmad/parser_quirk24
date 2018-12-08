@@ -1,0 +1,184 @@
+Syntax of quirk24.  [Revision -1.9]
+
+Quirk24 source programs are represented as ASCII text in the
+UTF-8 encoding.  Quirk24 source programs may contain the
+following forms of whitespace:
+
+    space (ASCII character code 0x20)
+    linefeed (ASCII character code 0xa)
+    return (ASCII character code 0xd)
+    comments consisting of the two-character sequence //
+        followed by any sequence of printable ASCII characters,
+        terminated by a linefeed or return
+
+No whitespace is allowed inside tokens other than strings.
+Whitespace is required where necessary to separate tokens,
+such as when a keyword precedes an identifier.  Whitespace is
+otherwise optional.
+
+Note that the representation of a <charliteral> in quirk24
+source programs differs from the representation used in abstract
+syntax trees.
+
+
+<program>       ::=  <protodecs> <classdecs> <stm>
+
+<protodec>      ::=  protocol <typeid> <typevars> <extends> { <funprotos> }
+
+<typevars>      ::=  
+                  |  < <tvars> >
+<extends>       ::=  
+                  |  extends <typeapps>
+<typeapp>       ::=  <typeid>
+                  |  <typeid> < <types> >
+                  |  <tvar>
+<funproto>      ::=  fun <id> <typevars> ( <formals> ) ;
+                  |  fun <id> <typevars> ( <formals> ) : <rtype> ;
+
+<classdec>      ::=  class <id> <typevars> implements <typeapps> <classbody>
+<classbody>     ::=  { <init> <bodydecs> }
+
+<init>          ::=  ( <formals> ) <block>
+
+<bodydec>       ::=  <constdec>
+                  |  <globaldec>
+                  |  <fielddec>
+                  |  <fundec>
+
+<constdec>      ::=  constant <primtype> <id> = <literal> ;
+
+<globaldec>     ::=  static <primtype> <id> = <literal> ;
+
+<fielddec>      ::=  <formal> ;
+
+<formal>        ::=  <type> <id>
+
+<fundec>        ::=  fun <id> <typevars> ( <formals> ) <block>
+                  |  fun <id> <typevars> ( <formals> ) : <rtype> <block>
+
+<block>         ::=  { <localdecs> <stms> }
+
+<localdec>      ::=  <vardec>
+                  |  <fundec>
+
+<vardec>        ::=  <type> <id> = <exp> ;
+
+<type>          ::=  <primtype>
+                  |  <typeapp>
+                  |  <type> []
+                  |  function ( ( <types> ) <arrow> <rtype> )
+
+<primtype>      ::=  bool
+                  |  char
+                  |  string
+                  |  int
+                  |  float
+
+<rtype>         ::=  <type>
+                  |  void
+
+<arrow>         ::=  ->
+
+<stm>           ::=  ;
+                  |  <exp> ;
+                  |  if ( <exp> ) <stm> else <stm>
+                  |  while ( <exp> ) <stm>
+                  |  for ( <vardec> <exp> ; <exp> ) <stm>
+                  |  return ;
+                  |  return <exp> ;
+                  |  <block>
+                  |  halt ( <exp> );
+
+<exp>           ::=  <lhs>
+                  |  <lhs> <assignop> <exp>
+<lhs>           ::=  <disjunct>
+                  |  <disjunct> <orop> <lhs>
+<disjunct>      ::=  <conjunct>
+                  |  <conjunct> <andop> <disjunct>
+<conjunct>      ::=  <simple>
+                  |  <simple> <relop> <simple>
+<simple>        ::=  <term>
+                  |  <simple> <addop> <term>
+<term>          ::=  <factor>
+                  |  <term> <mulop> <factor>
+<factor>        ::=  <unop> <factor>
+                  |  <literal> <factor-rest>
+                  |  new <id> ( <actuals> ) <factor-rest>
+                  |  new <id> < <types> > ( <actuals> ) <factor-rest>
+                  |  new <type> [ <exp> ] <factor-rest>
+                  |  lambda ( <formals> ) <block> <factor-rest>
+                  |  lambda ( <formals> ) : <rtype> <block> <factor-rest>
+                  |  ( <exp> ) <factor-rest>
+                  |  <id> <factor-rest>
+<factor-rest>   ::=  
+                  |  ( <actuals> ) <factor-rest>
+                  |  . <id> <factor-rest>
+                  |  [ <exp> ] <factor-rest> 
+
+<literal>       ::=  null  |  true  |  false
+                  |  <charliteral>
+                  |  <stringliteral>
+                  |  <intliteral>
+                  |  <floatliteral>
+
+<charliteral>   ::=  ' <printable> '
+<stringliteral> ::=  "<printables>"
+<intliteral>    ::=  <digit>  |  <digit> <intliteral>
+<floatliteral>  ::=  <intliteral> . <exponent>
+                  |  . <intliteral> <exponent>
+                  |  <intliteral> . <intliteral> <exponent>
+<exponent>      ::=  <empty>
+                  |  e <intliteral>
+                  |  e+ <intliteral>
+                  |  e- <intliteral>
+
+<tvars>         ::=  <tvar>  |  <tvar> , <tvars>
+
+<empty>         ::=
+<protodecs>     ::=  <empty>  |  <protodec> <protodecs>
+<typeapps>      ::=  <empty>  |  <typeapp> <typeapps-rest>
+<typeapps-rest> ::=  <empty>  |  , <typeapp> <typeapps-rest>
+<funprotos>     ::=  <empty>  |  <funproto> <funprotos>
+<classdecs>     ::=  <empty>  |  <classdec> <classdecs>
+<fundecs>       ::=  <empty>  |  <fundec> <fundecs>
+<types>         ::=  <empty>  |  <type> <types-rest>
+<types-rest>    ::=  <empty>  |  , <type> <types-rest>
+<bodydecs>      ::=  <empty>  |  <bodydec> <bodydecs>
+<localdecs>     ::=  <empty>  |  <localdec> <localdecs>
+<stms>          ::=  <empty>  |  <stm> <stms>
+<formals>       ::=  <empty>  |  <formal> <formals-rest>
+<formals-rest>  ::=  <empty>  |  , <formal> <formals-rest>
+<actuals>       ::=  <empty>  |  <exp> <actuals-rest>
+<actuals-rest>  ::=  <empty>  |  , <exp> <actuals-rest>
+<printables>    ::=  <empty>  |  <printable> <printables>
+
+<assignop>      ::=  =
+<orop>          ::=  ||
+<andop>         ::=  &&
+<relop>         ::=  ==  |  !=  |  <  |  <=  |  >  |  >=
+<addop>         ::=  +  |  -
+<mulop>         ::=  *  |  /
+<unop>          ::=  !  |  -
+
+<id>            ::=  <lcLtr> <subsequent>
+<typeid>        ::=  <id>
+<tvar>          ::=  <ucLtr> <subsequent>
+<subsequent>    ::=  <empty>
+                  |  <lcltr> <subsequent>
+                  |  <ucltr> <subsequent>
+                  |  <digit> <subsequent>
+                  |  <underscore> <subsequent>
+
+<lcltr>         ::=  a  | ... |  z
+<ucltr>         ::=  A  | ... |  Z
+<digit>         ::=  0  |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9
+<underscore>    ::=  _
+<printable>     ::=  <lcltr>  |  <ucltr>  |  <digit>  |  <underscore>
+                  |  <space>  |  !  |  #  |  $  |  %  |  &  |  (  |  )
+                  |  *  |  +  |  ,  |  -  |  .  |  /  |  :  |  ;  |  <
+                  |  =  |  >  |  ?  |  @  |  [  |  ]  |  ^  |  {  |  }
+                  |  ~
+
+Note that backslashes and several kinds of quotation marks are excluded
+from <printable>.  (This is to simplify interoperation with off-the-shelf
+tokenizers that would interpret those characters specially.)
